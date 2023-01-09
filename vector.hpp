@@ -83,6 +83,10 @@ namespace ft
 
     /****************************{ Modifiers }***************************************/
       void clear();
+      void pop_back();
+      void resize( size_type count, T value = T() );
+      void push_back( const T& value );
+      
 
     /********************************************************************************/
   };
@@ -239,7 +243,47 @@ namespace ft
     return (_begin);
   }
 
+  template <class T, class allocator_type>
+  void vector<T, allocator_type>::clear()
+  {
+    for (size_type i = 0; i < this->size(); i++)
+      _alloc.destroy(_begin + i);
+      
+  }
+  
+  template <class value_type, class allocator_type>
+  void vector<value_type, allocator_type>::pop_back()
+  {
+    _alloc.destroy(_end);
+    _end--;
+  }
 
+  template <class T, class allocator_type>
+  void vector<T, allocator_type>::resize( size_type count, T value)
+  {
+    if (count < size()) 
+    {
+      for (size_type i = size(); i > count; i--)
+        this->pop_back();
+    }
+    else if (count > size())
+    {
+      if (capacity() < count)
+        reserve(capacity() * 2);
+      for(pointer i = _end; i < _end + count; i++)
+        _alloc.construct(i, value);
+    }
+  }
+
+  template <class T, class allocator_type>
+  void vector<T, allocator_type>::push_back( const T& value ) 
+  {
+    if (size() < capacity())
+      _alloc.construct(_end, value);
+    else
+      resize(size() + 1, value);
+    _end++;
+  }
   
 } //end of namespace ft
 // #include "vector.tpp"
