@@ -6,11 +6,15 @@ int main()
   // _allocater.MAX_SIZE()
   try
 {
-  std::vector<int>a(4,7);
-  a.reserve(a.max_size() * 2);
-    std::cout<<"zaema donia hania" << std::endl;
+  std::vector<int>b(4,7);
+    std::cout << b.max_size() << std::endl;
+
+  ft::vector<int>a(4,7);
+    std::cout << a.max_size() << std::endl;
   }
   catch (std::exception& e)
-  {std::cout << e.what() << std::endl;}
+  {
+    std::cout << "---\n";
+    std::cout << e.what() << std::endl;}
     
 }

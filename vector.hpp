@@ -63,7 +63,8 @@ namespace ft
       bool empty() const;
       size_type size() const;
       size_type max_size() const;
-      void reserve( size_type new_cap );
+      void reserve( size_type new_cap);
+      reference operator[]( size_type pos );
 
 
     /********************************************************************************/
@@ -77,7 +78,7 @@ namespace ft
   vector<value_type, allocator_type >::vector (size_type n, const value_type& val ,const allocator_type& alloc) :_alloc(alloc)
   {
     _begin = _alloc.allocate(n);
-    for (size_type i; i < n; i++)
+    for (size_type i = 0; i < n; i++)
       _alloc.construct(_begin + i, val);
     _end = _begin + n;
     _end_cap = _begin + n;
@@ -87,27 +88,28 @@ namespace ft
   void vector<value_type, allocator_type >::assign(size_type count, const value_type& value)
   {
     for (int i = 0; i < _end - _begin; i++)
+        this->_alloc.destroy(_begin + i);
+    if (count > _end_cap - _begin)
     {
-        this->destroy(_begin + i);
-      if (count > _end_cap - _begin)
-        this->deallocate(_begin + i);
+      this->deallocate(_begin, _end_cap - _begin);
+      _begin = _alloc.allocate(count);
     }
-      if (count > _end_cap - _begin)
-        _begin = _alloc.allocate(count);
       for (size_type i = 0; i < count; i++)
         _alloc.construct(_begin + i, value);
       _end = _begin + count;
       _end_cap = _begin + count;
   }
+
   template <class value_type, class allocator_type>
   size_t vector<value_type, allocator_type>::size() const
   {
     return (_end - _begin);  
   }
+
   template <class value_type, class allocator_type>
   size_t vector<value_type, allocator_type>::max_size() const
   {
-    return (sizeof(size_t) / sizeof(value_type));  
+    return (_alloc.max_size());  
   }
 
   template <class value_type, class allocator_type>
@@ -125,12 +127,31 @@ namespace ft
   }
 
   template <class value_type, class allocator_type>
-  void vector<value_type, allocator_type>::reserve(size_t new_cap)
+  void vector<value_type, allocator_type>::reserve(size_type new_cap)
   {
-    // if (new_cap > this->max_size())
-    //   throw std::length_error("") in case allocarot doesn't handle it ;
+     if (new_cap > this->max_size())
+      throw std::length_error("allocator<T>::allocate(size_t n) 'n' exceeds maximum supported size");
 
-    
+    if (new_cap >= (unsigned long)(_end_cap - _begin))
+    {
+      size_type n = this->size();
+      pointer new_beg = _alloc.allocate(new_cap);
+      for (size_type i = 0; i < n; i++)
+      {
+        _alloc.construct(new_beg + i, *(_begin + i));
+        this->_alloc.destroy(_begin + i);
+      }
+      this->_alloc.deallocate(_begin, _end_cap - _begin);
+      _begin = new_beg;
+      _end = new_beg + n;
+      _end_cap = new_beg + new_cap;
+    } 
+  }
+
+  template<class value_type, class allocator_type>
+  typename vector<value_type, allocator_type>::reference  vector<value_type, allocator_type>::operator[](size_t pos)
+  {
+    //code code code ..
   }
 
 } //end of namespace ft
