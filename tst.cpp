@@ -10,7 +10,7 @@ int main()
     std::cout << b.max_size() << std::endl;
 
   ft::vector<int>a(4,7);
-    std::cout << a.max_size() << std::endl;
+    std::cout << a[2] << std::endl;
   }
   catch (std::exception& e)
   {

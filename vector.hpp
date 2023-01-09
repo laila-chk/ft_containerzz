@@ -42,6 +42,10 @@ namespace ft
       explicit vector (const allocator_type& alloc = allocator_type());
       explicit vector (size_type n, const value_type& val = value_type(),   
                           const allocator_type& alloc = allocator_type());
+      void assign(size_type count, const value_type& value);
+      vector& operator=( const vector& other );
+      allocator_type get_allocator() const;
+
 /*      template <class InputIterator>
       vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()) :_alloc(alloc), _begin(NULL), _end(NULL), _end_cap(NULL)
       {
@@ -58,14 +62,20 @@ namespace ft
       void assign( InputIt first, InputIt last );
 
 */
-      void assign(size_type count, const value_type& value);
-      size_type capacity() const;
+    /****************************{ Element accessors }*********************************/
+      reference operator[]( size_type pos );
+      reference front();
+      const_reference front() const;
+      reference back();
+      const_reference back() const;
+
+
+    /****************************{ capacity }***************************************/
       bool empty() const;
       size_type size() const;
       size_type max_size() const;
       void reserve( size_type new_cap);
-      reference operator[]( size_type pos );
-
+      size_type capacity() const;
 
     /********************************************************************************/
   };
@@ -121,9 +131,7 @@ namespace ft
   template <class value_type, class allocator_type>
   bool vector<value_type, allocator_type>::empty() const
   {
-    if (_end - _begin == 0)
-      return true;
-    return false;
+    return !(_end - _begin);
   }
 
   template <class value_type, class allocator_type>
@@ -151,9 +159,38 @@ namespace ft
   template<class value_type, class allocator_type>
   typename vector<value_type, allocator_type>::reference  vector<value_type, allocator_type>::operator[](size_t pos)
   {
-    //code code code ..
+    return (*(_begin + pos));
   }
 
+  template<class value_type, class allocator_type>
+  vector<value_type, allocator_type>& vector<value_type, allocator_type>:: operator=(const vector& other)
+  {
+    if (other.size() > this->capacity())
+      this->reserve(other.capacity());
+    for (size_type i = 0; i < this->size(); i++)
+      _alloc.deallocate(_begin + i);
+    for (size_type i = 0; i < other.size; i++)
+      _alloc.construct(_begin + i, other[i]);
+    return (*this);
+  }
+
+  template <class value_type, class allocator_type>
+  typename vector<value_type, allocator_type>::reference  vector<value_type, allocator_type>::front()
+  {
+    return (*_begin);
+  }
+  
+  template <class value_type, class allocator_type>
+  typename vector<value_type, allocator_type>::const_reference  vector<value_type, allocator_type>::front() const
+  {
+    return (*_begin);
+  }
+  
+  template <class value_type, class allocator_type>
+  typename vector<value_type, allocator_type>::allocator_type vector<value_type, allocator_type>::get_allocator() const
+  {
+    return (_alloc); 
+  }
 } //end of namespace ft
 // #include "vector.tpp"
 #endif 
