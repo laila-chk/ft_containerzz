@@ -62,20 +62,27 @@ namespace ft
       void assign( InputIt first, InputIt last );
 
 */
-    /****************************{ Element accessors }*********************************/
+    /****************************{ Element accessors }*(done Writing..)********************************/
       reference operator[]( size_type pos );
       reference front();
       const_reference front() const;
       reference back();
       const_reference back() const;
+      reference at( size_type pos );
+      const_reference at( size_type pos ) const;
+      T* data();
+      const T* data() const;
 
 
-    /****************************{ capacity }***************************************/
+    /****************************{ capacity }**(done writing)*************************************/
       bool empty() const;
       size_type size() const;
       size_type max_size() const;
       void reserve( size_type new_cap);
       size_type capacity() const;
+
+    /****************************{ Modifiers }***************************************/
+      void clear();
 
     /********************************************************************************/
   };
@@ -191,6 +198,49 @@ namespace ft
   {
     return (_alloc); 
   }
+
+  template <class value_type, class allocator_type>
+   typename vector<value_type, allocator_type>::reference  vector<value_type, allocator_type>::back() 
+  {
+    return (*_end);
+  }
+ 
+  template <class value_type, class allocator_type>
+   typename vector<value_type, allocator_type>::const_reference  vector<value_type, allocator_type>::back() const
+  {
+    return (*_end);
+  }
+
+   template <class value_type, class allocator_type>
+   typename vector<value_type, allocator_type>::reference  vector<value_type, allocator_type>::at(size_type pos) 
+  {
+    if (pos >= size())
+      throw std::out_of_range("vector");
+    return (*_end);
+  }
+  
+  template <class value_type, class allocator_type>
+   typename vector<value_type, allocator_type>::const_reference  vector<value_type, allocator_type>::at(size_type pos) const
+  {
+    if (pos >= size())
+      throw std::out_of_range("vector");
+    return (*_end);
+  }
+  
+  template <class T, class allocator_type>
+  T* vector<T, allocator_type>::data()
+  {
+    return (_begin);
+  }
+
+  template <class T, class allocator_type>
+  const T* vector<T, allocator_type>::data() const
+  {
+    return (_begin);
+  }
+
+
+  
 } //end of namespace ft
 // #include "vector.tpp"
 #endif 
