@@ -45,6 +45,7 @@ namespace ft
       void assign(size_type count, const value_type& value);
       vector& operator=( const vector& other );
       allocator_type get_allocator() const;
+      ~vector();
 
 /*      template <class InputIterator>
       vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()) :_alloc(alloc), _begin(NULL), _end(NULL), _end_cap(NULL)
@@ -64,6 +65,7 @@ namespace ft
 */
     /****************************{ Element accessors }*(done Writing..)********************************/
       reference operator[]( size_type pos );
+      const_reference operator[]( size_type pos ) const;
       reference front();
       const_reference front() const;
       reference back();
@@ -91,6 +93,19 @@ namespace ft
     /********************************************************************************/
   };
 
+   template<class value_type, class allocator_type>
+  typename vector<value_type, allocator_type>::const_reference  vector<value_type, allocator_type>::operator[](size_t pos) const
+  {
+    return (*(_begin + pos));
+  }
+
+template<class value_type, class allocator_type>
+  typename vector<value_type, allocator_type>::reference  vector<value_type, allocator_type>::operator[](size_t pos)
+  {
+    return (*(_begin + pos));
+  }
+
+
   template <class T, class Allocator >
   vector<T, Allocator >::vector(const Allocator& alloc ):_alloc(alloc), _begin(NULL), _end(NULL), _end_cap(NULL)
   {}
@@ -98,21 +113,34 @@ namespace ft
   template <class value_type, class allocator_type>
   vector<value_type, allocator_type >::vector (size_type n, const value_type& val ,const allocator_type& alloc) :_alloc(alloc)
   {
+    
+    if (n > _alloc.max_size())
+      throw std::out_of_range("vector");
     _begin = _alloc.allocate(n);
     for (size_type i = 0; i < n; i++)
       _alloc.construct(_begin + i, val);
     _end = _begin + n;
     _end_cap = _begin + n;
   }
+
+  template <class value_type, class allocator_type>
+  vector<value_type, allocator_type>::~vector()
+  {
+    this->clear(); 
+    if (_begin)
+      this->_alloc.deallocate(_begin, _end_cap - _begin);
+    _end = _begin;
+  }
   
   template <class value_type, class allocator_type>
   void vector<value_type, allocator_type >::assign(size_type count, const value_type& value)
   {
-    for (int i = 0; i < _end - _begin; i++)
+    for (size_type i = 0; i < size(); i++)
         this->_alloc.destroy(_begin + i);
-    if (count > _end_cap - _begin)
+    if (count > capacity())
     {
-      this->deallocate(_begin, _end_cap - _begin);
+      if (_begin)
+        this->_alloc.deallocate(_begin, capacity());
       _begin = _alloc.allocate(count);
     }
       for (size_type i = 0; i < count; i++)
@@ -130,6 +158,8 @@ namespace ft
   template <class value_type, class allocator_type>
   size_t vector<value_type, allocator_type>::max_size() const
   {
+    if (sizeof(value_type) == 1)
+      return (_alloc.max_size() / 2);
     return (_alloc.max_size());  
   }
 
@@ -142,16 +172,15 @@ namespace ft
   template <class value_type, class allocator_type>
   bool vector<value_type, allocator_type>::empty() const
   {
-    return !(_end - _begin);
+    if (_end == _begin)
+      return true;
+    return false;
   }
 
   template <class value_type, class allocator_type>
   void vector<value_type, allocator_type>::reserve(size_type new_cap)
   {
-     if (new_cap > this->max_size())
-      throw std::length_error("allocator<T>::allocate(size_t n) 'n' exceeds maximum supported size");
-
-    if (new_cap >= (unsigned long)(_end_cap - _begin))
+    if (new_cap > capacity())
     {
       size_type n = this->size();
       pointer new_beg = _alloc.allocate(new_cap);
@@ -160,27 +189,22 @@ namespace ft
         _alloc.construct(new_beg + i, *(_begin + i));
         this->_alloc.destroy(_begin + i);
       }
-      this->_alloc.deallocate(_begin, _end_cap - _begin);
+      if (_begin)
+        this->_alloc.deallocate(_begin, _end_cap - _begin);
       _begin = new_beg;
       _end = new_beg + n;
       _end_cap = new_beg + new_cap;
     } 
   }
 
-  template<class value_type, class allocator_type>
-  typename vector<value_type, allocator_type>::reference  vector<value_type, allocator_type>::operator[](size_t pos)
-  {
-    return (*(_begin + pos));
-  }
-
-  template<class value_type, class allocator_type>
+   template<class value_type, class allocator_type>
   vector<value_type, allocator_type>& vector<value_type, allocator_type>:: operator=(const vector& other)
   {
     if (other.size() > this->capacity())
       this->reserve(other.capacity());
-    for (size_type i = 0; i < this->size(); i++)
-      _alloc.deallocate(_begin + i);
-    for (size_type i = 0; i < other.size; i++)
+    if (_begin)
+      _alloc.deallocate(_begin, _end_cap - _begin);
+    for (size_type i = 0; i < other.size(); i++)
       _alloc.construct(_begin + i, other[i]);
     return (*this);
   }
@@ -206,13 +230,13 @@ namespace ft
   template <class value_type, class allocator_type>
    typename vector<value_type, allocator_type>::reference  vector<value_type, allocator_type>::back() 
   {
-    return (*_end);
+    return (*(_end - 1));
   }
  
   template <class value_type, class allocator_type>
    typename vector<value_type, allocator_type>::const_reference  vector<value_type, allocator_type>::back() const
   {
-    return (*_end);
+    return (*(_end - 1));
   }
 
    template <class value_type, class allocator_type>
@@ -220,7 +244,7 @@ namespace ft
   {
     if (pos >= size())
       throw std::out_of_range("vector");
-    return (*_end);
+    return (*(_begin + pos));
   }
   
   template <class value_type, class allocator_type>
@@ -228,7 +252,7 @@ namespace ft
   {
     if (pos >= size())
       throw std::out_of_range("vector");
-    return (*_end);
+    return (*(_begin + pos));
   }
   
   template <class T, class allocator_type>
@@ -248,30 +272,34 @@ namespace ft
   {
     for (size_type i = 0; i < this->size(); i++)
       _alloc.destroy(_begin + i);
-      
+    _end = _begin; 
   }
   
   template <class value_type, class allocator_type>
   void vector<value_type, allocator_type>::pop_back()
   {
-    _alloc.destroy(_end);
     _end--;
+    _alloc.destroy(_end);
   }
 
   template <class T, class allocator_type>
   void vector<T, allocator_type>::resize( size_type count, T value)
   {
-    if (count < size()) 
+    if (count < this->size()) 
     {
-      for (size_type i = size(); i > count; i--)
-        this->pop_back();
+     for (size_type i = size(); i > count; i--)
+       this->pop_back();
+      _end = _begin + count;
     }
     else if (count > size())
     {
-      if (capacity() < count)
+      if (count > capacity() * 2)
+        reserve(count);
+      else
         reserve(capacity() * 2);
-      for(pointer i = _end; i < _end + count; i++)
+      for(pointer i = _end; i < _begin + count; i++)
         _alloc.construct(i, value);
+      _end = _begin +  count;
     }
   }
 
@@ -279,10 +307,12 @@ namespace ft
   void vector<T, allocator_type>::push_back( const T& value ) 
   {
     if (size() < capacity())
-      _alloc.construct(_end, value);
+  {
+    _alloc.construct(_end, value);
+    _end++;
+  }
     else
       resize(size() + 1, value);
-    _end++;
   }
   
 } //end of namespace ft
