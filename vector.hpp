@@ -8,6 +8,7 @@
 #include <memory>
 #include <vector>
 #include <stdexcept>
+#include "iterator.hpp"
 
 
 namespace ft
@@ -26,6 +27,7 @@ namespace ft
       typedef typename allocator_type::pointer              pointer;
       typedef typename allocator_type::const_pointer        const_pointer;
 
+      typedef typename ft::iterator<T>                      iterator; 
       // typedef implementation-defined                  iterator;
       // typedef implementation-defined                     const_iterator;
       // typedef std::reverse_iterator<iterator>            reverse_iterator;
@@ -92,6 +94,8 @@ namespace ft
       
 
     /****************************{ iterator class }***************************************/
+      iterator& begin();
+
        /********************************************************************************/
   };
 
@@ -316,7 +320,25 @@ template<class value_type, class allocator_type>
     else
       resize(size() + 1, value);
   }
-  
+
+  template <class T, class allocator_type>
+  typename vector<T, allocator_type>::iterator& vector<T, allocator_type>::begin(void)
+  {
+    iterator it();
+    it.add = _begin;
+    it.ref = &_begin;
+    it.value_type = *_begin ;
+  }
+
+  // template <class T, class allocator_type>
+  // typename vector<T, allocator_type>::iterator& vector<T, allocator_type>::end(void)
+  // {
+  //   iterator it();
+    // it.add = _end;
+    // it.ref = &_end;
+  //   it.value_type = *_end ;
+  // }
+
 } //end of namespace ft
 // #include "vector.tpp"
 #endif 
