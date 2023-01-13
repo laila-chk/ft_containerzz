@@ -2,6 +2,7 @@
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
+#include <cstddef>
 #include <iostream>
 #include <iterator>
 #include <memory>
@@ -90,7 +91,8 @@ namespace ft
       void push_back( const T& value );
       
 
-    /********************************************************************************/
+    /****************************{ iterator class }***************************************/
+       /********************************************************************************/
   };
 
    template<class value_type, class allocator_type>
