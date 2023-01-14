@@ -94,7 +94,8 @@ namespace ft
       
 
     /****************************{ iterator class }***************************************/
-      iterator& begin();
+      iterator begin();
+      iterator end();
 
        /********************************************************************************/
   };
@@ -322,22 +323,22 @@ template<class value_type, class allocator_type>
   }
 
   template <class T, class allocator_type>
-  typename vector<T, allocator_type>::iterator& vector<T, allocator_type>::begin(void)
+  typename vector<T, allocator_type>::iterator vector<T, allocator_type>::begin(void)
   {
-    iterator it();
+    iterator it;
     it.add = _begin;
-    it.ref = &_begin;
-    it.value_type = *_begin ;
+    it.val= *_begin ;
+    return (it);
   }
 
-  // template <class T, class allocator_type>
-  // typename vector<T, allocator_type>::iterator& vector<T, allocator_type>::end(void)
-  // {
-  //   iterator it();
-    // it.add = _end;
-    // it.ref = &_end;
-  //   it.value_type = *_end ;
-  // }
+  template <class T, class allocator_type>
+  typename vector<T, allocator_type>::iterator vector<T, allocator_type>::end(void)
+  {
+    iterator it;
+    it.add = _end;
+    it.val= *_end ;
+    return (it);
+  }
 
 } //end of namespace ft
 // #include "vector.tpp"

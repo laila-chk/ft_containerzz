@@ -27,16 +27,67 @@ namespace ft
 
       iterator();
       ~iterator();
-      // iterator& begin();
-      // iterator& end();
+      iterator (const iterator& it);
+      iterator& operator = (const iterator& it);
+      bool operator < (const iterator& it);
+      value_type operator * ()const ;
+      value_type operator ++ (); 
+      value_type operator ++ (int); 
   };
 
   template <class T>
-  iterator<T>::iterator() : add(NULL)
-  {}
+  iterator<T>::iterator() : add(NULL), ref(*add)
+  {
+  }
   
-  // template<class T>
-  // iterator& iterator<T>::begin()
-  // {}
-}
+  template <class T>
+  iterator<T>::~iterator()
+  {}
+
+   template<class T>
+  typename iterator<T>::value_type iterator<T>::operator * () const
+  {
+    return (this->val);
+  }
+
+  template<class T>
+  typename iterator<T>::value_type iterator<T>::operator++ ()
+  {
+    this->add++; 
+    this->val = (*add);
+    return (*this);
+  }
+
+
+  template<class T>
+  typename iterator<T>::value_type iterator<T>::operator++ (int)
+  {
+    iterator cp(*this);
+    ++(*this);
+    return (cp);
+  }
+
+  template<class T>
+  bool iterator<T>::operator < (const iterator& it)
+  {
+    if (this->val < it.val)
+      return true;
+    return false;
+  }
+  
+  template<class T>
+  iterator<T>& iterator<T>::operator = (const iterator<T>& it)
+  {
+    this->add = it.add;
+    this->add = it.val;
+  }
+
+  template<class T>
+  iterator<T>::iterator (const iterator<T>& it)
+  {
+    this->add = it.add;
+    this->add = it.val;
+  }
+
+}// end of namespace scope;
 #endif  

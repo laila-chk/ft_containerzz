@@ -7,11 +7,13 @@ int main()
   try
 {
     std::vector<std::string>a;
-  ft::vector<int>b;
-    b.resize(22);
-    b.resize(33);
-  for (size_t i = 0; i < b.size() ; i++)
-      std::cout << b[i] << "  " << std::endl;
+    ft::vector<int>b;
+    b.push_back(12);
+    b.push_back(52);
+    b.push_back(102);
+    ft::vector<int>::iterator it;
+  for (it = b.begin(); it < b.end() ; it++)
+      std::cout << *it << std::endl;
   // b.reserve(b.max_size() + 1);
   // std::cout << b.capacity() << "is the init cap" << std::endl;
   // b.push_back(5);
@@ -26,6 +28,7 @@ int main()
   catch (std::exception& e)
   {
     std::cout << "---\n";
-    std::cout << e.what() << std::endl;}
+    std::cout << e.what() << std::endl;
+  }
     
 }
