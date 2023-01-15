@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vector.hpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lchokri <lchokri@student.1337.ma>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/05 16:05:56 by lchokri           #+#    #+#             */
+/*   Updated: 2023/01/14 21:09:01 by lchokri          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
@@ -327,7 +339,6 @@ template<class value_type, class allocator_type>
   {
     iterator it;
     it.add = _begin;
-    it.val= *_begin ;
     return (it);
   }
 
@@ -336,7 +347,6 @@ template<class value_type, class allocator_type>
   {
     iterator it;
     it.add = _end;
-    it.val= *_end ;
     return (it);
   }
 

@@ -6,13 +6,18 @@ int main()
 {
   try
 {
-    std::vector<std::string>a;
-    ft::vector<int>b;
-    b.push_back(12);
+    std::vector<int>b;
+    b.push_back(1666);
     b.push_back(52);
     b.push_back(102);
-    ft::vector<int>::iterator it;
-  for (it = b.begin(); it < b.end() ; it++)
+    b.push_back(55);
+    std::vector<int>::iterator it;
+    it = b.begin();
+  // for (it = b.begin(); it < b.end() ; it++)
+      // std::cout << *it << std::endl;
+    // it+3;
+      std::cout << it[2] << std::endl;
+    it += 2;
       std::cout << *it << std::endl;
   // b.reserve(b.max_size() + 1);
   // std::cout << b.capacity() << "is the init cap" << std::endl;
