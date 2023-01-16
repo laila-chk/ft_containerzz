@@ -6,7 +6,7 @@
 /*   By: lchokri <lchokri@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 16:05:56 by lchokri           #+#    #+#             */
-/*   Updated: 2023/01/14 21:09:01 by lchokri          ###   ########.fr       */
+/*   Updated: 2023/01/16 14:08:05 by lchokri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 #include <vector>
 #include <stdexcept>
 #include "iterator.hpp"
+#include <iterator>
+#include <list>
 
 
 namespace ft
@@ -44,7 +46,6 @@ namespace ft
       // typedef implementation-defined                     const_iterator;
       // typedef std::reverse_iterator<iterator>            reverse_iterator;
       // typedef std::reverse_iterator<const_iterator>      const_reverse_iterator;
-      typedef typename std::iterator<std::input_iterator_tag, T> InputIterator;
       
     private:
       allocator_type _alloc;
@@ -54,30 +55,25 @@ namespace ft
       
     public:
       /****************************Member functions***********************/
+
+      /****************************{ Constructors }***********************/
       explicit vector (const allocator_type& alloc = allocator_type());
-      explicit vector (size_type n, const value_type& val = value_type(),   
-                          const allocator_type& alloc = allocator_type());
-      void assign(size_type count, const value_type& value);
+      explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type());
+      vector (iterator first, iterator last, const allocator_type& alloc = allocator_type());
+      vector(const vector& other);
+
+
       vector& operator=( const vector& other );
-      allocator_type get_allocator() const;
       ~vector();
 
-/*      template <class InputIterator>
-      vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()) :_alloc(alloc), _begin(NULL), _end(NULL), _end_cap(NULL)
-      {
-      int n = last - first;
 
-      _begin = _alloc.allocate(n);
-      for (int i= 0; i < n; i++)
-        _alloc.construct(_begin + i, *first + i);
-      _end = _begin + n;
-      _end_cap = _begin + n;
-     }
 
+
+      allocator_type get_allocator() const;
+      void assign(size_type count, const value_type& value);
      template< class InputIt >
       void assign( InputIt first, InputIt last );
 
-*/
     /****************************{ Element accessors }*(done Writing..)********************************/
       reference operator[]( size_type pos );
       const_reference operator[]( size_type pos ) const;
@@ -111,6 +107,14 @@ namespace ft
 
        /********************************************************************************/
   };
+  
+      template< class T, class alloc_type>
+      vector<T, alloc_type>::vector(vector<T, alloc_type>::iterator first, vector<T, alloc_type>::iterator last, const alloc_type& alloc) : _alloc(alloc)
+      {
+        vector<T, allocator_type>::iterator it; 
+        for (it = first; it < last; it++)
+          this->push_back(*it);
+      }
 
    template<class value_type, class allocator_type>
   typename vector<value_type, allocator_type>::const_reference  vector<value_type, allocator_type>::operator[](size_t pos) const
@@ -140,6 +144,16 @@ template<class value_type, class allocator_type>
       _alloc.construct(_begin + i, val);
     _end = _begin + n;
     _end_cap = _begin + n;
+  }
+
+  template<class T, class allocator_type>
+  vector<T, allocator_type>::vector(const vector& other)
+  {
+    this->reserve(other.capacity());
+    if (_begin)
+      _alloc.deallocate(_begin, _end_cap - _begin);
+    for (size_type i = 0; i < other.size(); i++)
+      _alloc.construct(_begin + i, other[i]);
   }
 
   template <class value_type, class allocator_type>

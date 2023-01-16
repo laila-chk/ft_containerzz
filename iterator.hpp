@@ -15,9 +15,9 @@ namespace ft
   class iterator
   {
     public:
-      typedef std::random_access_iterator_tag    iterator_category ;
+      typedef std::random_access_iterator_tag             iterator_category ;
       typedef T                                           value_type;
-      typedef std::ptrdiff_t                     difference_type;
+      typedef std::ptrdiff_t                              difference_type;
       typedef T*                                          pointer;
       typedef T&                                          refrence;
 
@@ -123,7 +123,7 @@ namespace ft
   typename iterator<T>::value_type iterator<T>::operator[] (unsigned int i)const 
   {
     return *(add + i);
-}
+  }
 
   template<class T>
   typename iterator<T>::value_type iterator<T>::operator -> () const
