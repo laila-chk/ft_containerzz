@@ -6,7 +6,7 @@
 /*   By: lchokri <lchokri@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 16:05:56 by lchokri           #+#    #+#             */
-/*   Updated: 2023/01/17 23:23:24 by lchokri          ###   ########.fr       */
+/*   Updated: 2023/01/18 00:28:52 by lchokri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ namespace ft
   {
     
     if (n > _alloc.max_size())
-      throw std::out_of_range("vector");
+      throw std::length_error("vector");
     _begin = _alloc.allocate(n);
     for (size_type i = 0; i < n; i++)
       _alloc.construct(_begin + i, val);
@@ -134,13 +134,13 @@ namespace ft
   }
 
   template<class T, class allocator_type>
-  vector<T, allocator_type>::vector(const vector& other)
+  vector<T, allocator_type>::vector(const vector& other):_alloc(other._alloc), _begin(NULL), _end(NULL), _end_cap(NULL)
   {
+	size_type n = other.size();
     this->reserve(other.capacity());
-//    if (_begin)
-// 	    _alloc.deallocate(_begin, _end_cap - _begin);
-    for (size_type i = 0; i < other.size(); i++)
+    for (size_type i = 0; i < n; i++)
       _alloc.construct(_begin + i, other[i]);
+	_end = _begin + n;
   }
 
   template <class value_type, class allocator_type>
