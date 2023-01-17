@@ -6,7 +6,7 @@
 /*   By: lchokri <lchokri@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 16:05:56 by lchokri           #+#    #+#             */
-/*   Updated: 2023/01/16 14:08:05 by lchokri          ###   ########.fr       */
+/*   Updated: 2023/01/17 02:41:12 by lchokri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,12 @@ namespace ft
       /****************************{ Constructors }***********************/
       explicit vector (const allocator_type& alloc = allocator_type());
       explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type());
-      vector (iterator first, iterator last, const allocator_type& alloc = allocator_type());
+      template< class InputIt >
+      vector (InputIt first, InputIt last, const allocator_type& alloc = allocator_type())
+      {
+       for (InputIt it= first; it != last; it++)
+        this->push_back(*it);
+      }
       vector(const vector& other);
 
 
@@ -108,27 +113,8 @@ namespace ft
        /********************************************************************************/
   };
   
-      template< class T, class alloc_type>
-      vector<T, alloc_type>::vector(vector<T, alloc_type>::iterator first, vector<T, alloc_type>::iterator last, const alloc_type& alloc) : _alloc(alloc)
-      {
-        vector<T, allocator_type>::iterator it; 
-        for (it = first; it < last; it++)
-          this->push_back(*it);
-      }
 
-   template<class value_type, class allocator_type>
-  typename vector<value_type, allocator_type>::const_reference  vector<value_type, allocator_type>::operator[](size_t pos) const
-  {
-    return (*(_begin + pos));
-  }
-
-template<class value_type, class allocator_type>
-  typename vector<value_type, allocator_type>::reference  vector<value_type, allocator_type>::operator[](size_t pos)
-  {
-    return (*(_begin + pos));
-  }
-
-
+  /***********************************************{ Constructors }*********************************************************/
   template <class T, class Allocator >
   vector<T, Allocator >::vector(const Allocator& alloc ):_alloc(alloc), _begin(NULL), _end(NULL), _end_cap(NULL)
   {}
@@ -164,8 +150,21 @@ template<class value_type, class allocator_type>
       this->_alloc.deallocate(_begin, _end_cap - _begin);
     _end = _begin;
   }
-  
-  template <class value_type, class allocator_type>
+
+   template<class value_type, class allocator_type>
+  vector<value_type, allocator_type>& vector<value_type, allocator_type>:: operator=(const vector& other)
+  {
+    if (other.size() > this->capacity())
+      this->reserve(other.capacity());
+    if (_begin)
+      _alloc.deallocate(_begin, _end_cap - _begin);
+    for (size_type i = 0; i < other.size(); i++)
+      _alloc.construct(_begin + i, other[i]);
+    return (*this);
+  }
+
+    /****************************Member functions***********************/
+   template <class value_type, class allocator_type>
   void vector<value_type, allocator_type >::assign(size_type count, const value_type& value)
   {
     for (size_type i = 0; i < size(); i++)
@@ -182,64 +181,24 @@ template<class value_type, class allocator_type>
       _end_cap = _begin + count;
   }
 
-  template <class value_type, class allocator_type>
-  size_t vector<value_type, allocator_type>::size() const
-  {
-    return (_end - _begin);  
-  }
 
   template <class value_type, class allocator_type>
-  size_t vector<value_type, allocator_type>::max_size() const
+  typename vector<value_type, allocator_type>::allocator_type vector<value_type, allocator_type>::get_allocator() const
   {
-    if (sizeof(value_type) == 1)
-      return (_alloc.max_size() / 2);
-    return (_alloc.max_size());  
+    return (_alloc); 
   }
 
-  template <class value_type, class allocator_type>
-  size_t vector<value_type, allocator_type>::capacity() const
+  /**************************************************{ Element accessors }*(done Writing..)****************************************/
+  template<class value_type, class allocator_type>
+  typename vector<value_type, allocator_type>::const_reference  vector<value_type, allocator_type>::operator[](size_t pos) const
   {
-    return (_end_cap - _begin);  
-  }
-  
-  template <class value_type, class allocator_type>
-  bool vector<value_type, allocator_type>::empty() const
-  {
-    if (_end == _begin)
-      return true;
-    return false;
+    return (*(_begin + pos));
   }
 
-  template <class value_type, class allocator_type>
-  void vector<value_type, allocator_type>::reserve(size_type new_cap)
+  template<class value_type, class allocator_type>
+  typename vector<value_type, allocator_type>::reference  vector<value_type, allocator_type>::operator[](size_t pos)
   {
-    if (new_cap > capacity())
-    {
-      size_type n = this->size();
-      pointer new_beg = _alloc.allocate(new_cap);
-      for (size_type i = 0; i < n; i++)
-      {
-        _alloc.construct(new_beg + i, *(_begin + i));
-        this->_alloc.destroy(_begin + i);
-      }
-      if (_begin)
-        this->_alloc.deallocate(_begin, _end_cap - _begin);
-      _begin = new_beg;
-      _end = new_beg + n;
-      _end_cap = new_beg + new_cap;
-    } 
-  }
-
-   template<class value_type, class allocator_type>
-  vector<value_type, allocator_type>& vector<value_type, allocator_type>:: operator=(const vector& other)
-  {
-    if (other.size() > this->capacity())
-      this->reserve(other.capacity());
-    if (_begin)
-      _alloc.deallocate(_begin, _end_cap - _begin);
-    for (size_type i = 0; i < other.size(); i++)
-      _alloc.construct(_begin + i, other[i]);
-    return (*this);
+    return (*(_begin + pos));
   }
 
   template <class value_type, class allocator_type>
@@ -254,11 +213,6 @@ template<class value_type, class allocator_type>
     return (*_begin);
   }
   
-  template <class value_type, class allocator_type>
-  typename vector<value_type, allocator_type>::allocator_type vector<value_type, allocator_type>::get_allocator() const
-  {
-    return (_alloc); 
-  }
 
   template <class value_type, class allocator_type>
    typename vector<value_type, allocator_type>::reference  vector<value_type, allocator_type>::back() 
@@ -299,6 +253,58 @@ template<class value_type, class allocator_type>
   {
     return (_begin);
   }
+
+    /*******************************************{ capacity }*************************************************************/
+   
+  template <class value_type, class allocator_type>
+  size_t vector<value_type, allocator_type>::size() const
+  {
+    return (_end - _begin);  
+  }
+
+  template <class value_type, class allocator_type>
+  size_t vector<value_type, allocator_type>::max_size() const
+  {
+    if (sizeof(value_type) == 1)
+      return (_alloc.max_size() / 2);
+    return (_alloc.max_size());  
+  }
+
+  template <class value_type, class allocator_type>
+  size_t vector<value_type, allocator_type>::capacity() const
+  {
+    return (_end_cap - _begin);  
+  }
+
+   template <class value_type, class allocator_type>
+  bool vector<value_type, allocator_type>::empty() const
+  {
+    if (_end == _begin)
+      return true;
+    return false;
+  }
+
+ template <class value_type, class allocator_type>
+  void vector<value_type, allocator_type>::reserve(size_type new_cap)
+  {
+    if (new_cap > capacity())
+    {
+      size_type n = this->size();
+      pointer new_beg = _alloc.allocate(new_cap);
+      for (size_type i = 0; i < n; i++)
+      {
+        _alloc.construct(new_beg + i, *(_begin + i));
+        this->_alloc.destroy(_begin + i);
+      }
+      if (_begin)
+        this->_alloc.deallocate(_begin, _end_cap - _begin);
+      _begin = new_beg;
+      _end = new_beg + n;
+      _end_cap = new_beg + new_cap;
+    } 
+  }
+
+    /**************************************************************{ Modifiers }********************************************************/
 
   template <class T, class allocator_type>
   void vector<T, allocator_type>::clear()
@@ -348,6 +354,7 @@ template<class value_type, class allocator_type>
       resize(size() + 1, value);
   }
 
+  /*********************************************{ iterator class }********************************************************/
   template <class T, class allocator_type>
   typename vector<T, allocator_type>::iterator vector<T, allocator_type>::begin(void)
   {
@@ -364,6 +371,113 @@ template<class value_type, class allocator_type>
     return (it);
   }
 
+  /*********************************************{ Template Specialization }********************************************************/
+  template <class T> 
+  struct is_integral
+  {
+    static const bool value = false;
+  };
+
+  template <>
+  struct is_integral<bool>
+  {
+    static const bool value = true;
+  };
+  template <>
+  struct is_integral<char>
+  {
+    static const bool value = true;
+  };
+
+  template <>
+  struct is_integral<char16_t>
+  {
+    static const bool value = true;
+  };
+
+  template <>
+  struct is_integral<char32_t>
+  {
+    static const bool value = true;
+  };
+
+  template <>
+  struct is_integral<wchar_t>
+  {
+    static const bool value = true;
+  };
+
+  template <>
+  struct is_integral<signed char>
+  {
+    static const bool value = true;
+  };
+
+  template <>
+  struct is_integral<short int>
+  {
+    static const bool value = true;
+  };
+
+  template <>
+  struct is_integral<int>
+  {
+    static const bool value = true;
+  };
+
+  template <>
+  struct is_integral<long int>
+  {
+    static const bool value = true;
+  };
+  template <>
+  struct is_integral<long long int>
+  {
+    static const bool value = true;
+  };
+
+  template <>
+  struct is_integral<unsigned char>
+  {
+    static const bool value = true;
+  };
+
+  template <>
+  struct is_integral<unsigned short int>
+  {
+    static const bool value = true;
+  };
+
+  template <>
+  struct is_integral<unsigned int>
+  {
+    static const bool value = true;
+  };
+
+  template <>
+  struct is_integral<unsigned long int>
+ {
+    static const bool value = true;
+  };
+
+  template <>
+  struct is_integral<unsigned long long int>
+ {
+    static const bool value = true;
+  };
+
+/***************************************************{enable if}*******************************************************/
+  
+  template<bool B, class T = void>
+  struct enable_if {};
+
+  template<class T>
+  struct enable_if<true, T> 
+  {
+    typedef T type;
+  };
+
 } //end of namespace ft
-// #include "vector.tpp"
+
+
 #endif 
