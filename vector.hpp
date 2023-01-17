@@ -6,7 +6,7 @@
 /*   By: lchokri <lchokri@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 16:05:56 by lchokri           #+#    #+#             */
-/*   Updated: 2023/01/17 02:41:12 by lchokri          ###   ########.fr       */
+/*   Updated: 2023/01/17 23:23:24 by lchokri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@
 
 
 namespace ft
-{
+{  
+ 
   template <class T, class Allocator = std::allocator<T> >
   class vector
   {
@@ -59,10 +60,10 @@ namespace ft
       /****************************{ Constructors }***********************/
       explicit vector (const allocator_type& alloc = allocator_type());
       explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type());
-      template< class InputIt >
-      vector (InputIt first, InputIt last, const allocator_type& alloc = allocator_type())
+      template< class InputIt>
+      vector (InputIt first, InputIt last, const allocator_type& alloc = allocator_type(), typename ft::enable_if<!is_integral<InputIt>::value, InputIt>::type* = 0): _alloc(alloc), _begin(NULL), _end(NULL), _end_cap(NULL)
       {
-       for (InputIt it= first; it != last; it++)
+       for (InputIt it = first; it != last; it++)
         this->push_back(*it);
       }
       vector(const vector& other);
@@ -136,8 +137,8 @@ namespace ft
   vector<T, allocator_type>::vector(const vector& other)
   {
     this->reserve(other.capacity());
-    if (_begin)
-      _alloc.deallocate(_begin, _end_cap - _begin);
+//    if (_begin)
+// 	    _alloc.deallocate(_begin, _end_cap - _begin);
     for (size_type i = 0; i < other.size(); i++)
       _alloc.construct(_begin + i, other[i]);
   }
@@ -370,112 +371,6 @@ namespace ft
     it.add = _end;
     return (it);
   }
-
-  /*********************************************{ Template Specialization }********************************************************/
-  template <class T> 
-  struct is_integral
-  {
-    static const bool value = false;
-  };
-
-  template <>
-  struct is_integral<bool>
-  {
-    static const bool value = true;
-  };
-  template <>
-  struct is_integral<char>
-  {
-    static const bool value = true;
-  };
-
-  template <>
-  struct is_integral<char16_t>
-  {
-    static const bool value = true;
-  };
-
-  template <>
-  struct is_integral<char32_t>
-  {
-    static const bool value = true;
-  };
-
-  template <>
-  struct is_integral<wchar_t>
-  {
-    static const bool value = true;
-  };
-
-  template <>
-  struct is_integral<signed char>
-  {
-    static const bool value = true;
-  };
-
-  template <>
-  struct is_integral<short int>
-  {
-    static const bool value = true;
-  };
-
-  template <>
-  struct is_integral<int>
-  {
-    static const bool value = true;
-  };
-
-  template <>
-  struct is_integral<long int>
-  {
-    static const bool value = true;
-  };
-  template <>
-  struct is_integral<long long int>
-  {
-    static const bool value = true;
-  };
-
-  template <>
-  struct is_integral<unsigned char>
-  {
-    static const bool value = true;
-  };
-
-  template <>
-  struct is_integral<unsigned short int>
-  {
-    static const bool value = true;
-  };
-
-  template <>
-  struct is_integral<unsigned int>
-  {
-    static const bool value = true;
-  };
-
-  template <>
-  struct is_integral<unsigned long int>
- {
-    static const bool value = true;
-  };
-
-  template <>
-  struct is_integral<unsigned long long int>
- {
-    static const bool value = true;
-  };
-
-/***************************************************{enable if}*******************************************************/
-  
-  template<bool B, class T = void>
-  struct enable_if {};
-
-  template<class T>
-  struct enable_if<true, T> 
-  {
-    typedef T type;
-  };
 
 } //end of namespace ft
 
