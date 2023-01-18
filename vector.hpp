@@ -6,7 +6,7 @@
 /*   By: lchokri <lchokri@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 16:05:56 by lchokri           #+#    #+#             */
-/*   Updated: 2023/01/18 01:23:23 by lchokri          ###   ########.fr       */
+/*   Updated: 2023/01/18 02:23:06 by lchokri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,23 +165,31 @@ namespace ft
   }
 
     /****************************Member functions***********************/
-   template <class value_type, class allocator_type>
-  void vector<value_type, allocator_type >::assign(size_type count, const value_type& value)
-  {
-    for (size_type i = 0; i < size(); i++)
-        this->_alloc.destroy(_begin + i);
-    if (count > capacity())
-    {
-      if (_begin)
-        this->_alloc.deallocate(_begin, capacity());
-      _begin = _alloc.allocate(count);
-    }
-      for (size_type i = 0; i < count; i++)
-        _alloc.construct(_begin + i, value);
-      _end = _begin + count;
-      _end_cap = _begin + count;
-  }
+	template <class value_type, class allocator_type>
+	void vector<value_type, allocator_type >::assign(size_type count, const value_type& value)
+	{
+		for (size_type i = 0; i < size(); i++)
+			this->_alloc.destroy(_begin + i);
+		if (_begin)
+			this->_alloc.deallocate(_begin, capacity());
+		_begin = _alloc.allocate(count);
+		for (size_type i = 0; i < count; i++)
+			_alloc.construct(_begin + i, value);
+		_end = _begin + count;
+		_end_cap = _begin + count;
+	}
 
+	template<class value_type, class allocator_type>
+	template< class InputIt >
+	void vector<value_type, allocator_type >::assign(InputIt first, InputIt last)
+	{
+		InputIt it = first;
+		int i; 
+		for (i= 0; (it + i) != last; i++);
+		reserve(i);
+		for (i = 0; (it + i) != last; i++)
+			assign(1, (i + first));
+	}
 
   template <class value_type, class allocator_type>
   typename vector<value_type, allocator_type>::allocator_type vector<value_type, allocator_type>::get_allocator() const

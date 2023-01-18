@@ -4,6 +4,7 @@
 #include <vector>
 int  main()
 {
+	/**************
   try
 {
     double x[12] = {11.2 , 1 ,12 , 3232.3, 12.2, 1.1, 2.2, 3.3, 4.4};
@@ -44,5 +45,44 @@ int  main()
     std::cout << "---\n";
     std::cout << e.what() << std::endl;
   }
-    
+  *********************/
+{
+  std::vector<int> first;
+  std::vector<int> second;
+  std::vector<int> third;
+
+  first.assign (7,100);             // 7 ints with a value of 100
+
+  std::vector<int>::iterator it;
+  it=first.begin()+1;
+
+  second.assign (it,first.end()-1); // the 5 central values of first
+
+  int myints[] = {1776,7,4};
+  third.assign (myints,myints+3);   // assigning from array.
+
+  std::cout << "Size of first: " << int (first.size()) << '\n';
+  std::cout << "Size of second: " << int (second.size()) << '\n';
+  std::cout << "Size of third: " << int (third.size()) << '\n';
+  }
+{
+  ft::vector<int> first;
+  ft::vector<int> second;
+  ft::vector<int> third;
+
+  first.assign (7,100);             // 7 ints with a value of 100
+
+  ft::vector<int>::iterator it;
+  it=first.begin()+1;
+
+  second.assign (it,first.end()-1); // the 5 central values of first
+
+  int myints[] = {1776,7,4};
+  third.assign (myints,myints+3);   // assigning from array.
+
+  std::cout << "Size of first: " << int (first.size()) << '\n';
+  std::cout << "Size of second: " << int (second.size()) << '\n';
+  std::cout << "Size of third: " << int (third.size()) << '\n';
+}
+  return 0;
 }
