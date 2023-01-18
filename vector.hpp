@@ -6,7 +6,7 @@
 /*   By: lchokri <lchokri@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 16:05:56 by lchokri           #+#    #+#             */
-/*   Updated: 2023/01/18 00:28:52 by lchokri          ###   ########.fr       */
+/*   Updated: 2023/01/18 01:23:23 by lchokri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ namespace ft
       void push_back( const T& value );
       
 
-    /****************************{ iterator class }***************************************/
+    /****************************{ iterator }***************************************/
       iterator begin();
       iterator end();
 
@@ -191,44 +191,44 @@ namespace ft
 
   /**************************************************{ Element accessors }*(done Writing..)****************************************/
   template<class value_type, class allocator_type>
-  typename vector<value_type, allocator_type>::const_reference  vector<value_type, allocator_type>::operator[](size_t pos) const
+  typename vector<value_type, allocator_type>::const_reference vector<value_type, allocator_type>::operator[](size_t pos) const
   {
     return (*(_begin + pos));
   }
 
   template<class value_type, class allocator_type>
-  typename vector<value_type, allocator_type>::reference  vector<value_type, allocator_type>::operator[](size_t pos)
+  typename vector<value_type, allocator_type>::reference vector<value_type, allocator_type>::operator[](size_t pos)
   {
     return (*(_begin + pos));
   }
 
   template <class value_type, class allocator_type>
-  typename vector<value_type, allocator_type>::reference  vector<value_type, allocator_type>::front()
+  typename vector<value_type, allocator_type>::reference vector<value_type, allocator_type>::front()
   {
     return (*_begin);
   }
   
   template <class value_type, class allocator_type>
-  typename vector<value_type, allocator_type>::const_reference  vector<value_type, allocator_type>::front() const
+  typename vector<value_type, allocator_type>::const_reference vector<value_type, allocator_type>::front() const
   {
     return (*_begin);
   }
   
 
   template <class value_type, class allocator_type>
-   typename vector<value_type, allocator_type>::reference  vector<value_type, allocator_type>::back() 
+   typename vector<value_type, allocator_type>::reference vector<value_type, allocator_type>::back() 
   {
     return (*(_end - 1));
   }
  
   template <class value_type, class allocator_type>
-   typename vector<value_type, allocator_type>::const_reference  vector<value_type, allocator_type>::back() const
+   typename vector<value_type, allocator_type>::const_reference vector<value_type, allocator_type>::back() const
   {
     return (*(_end - 1));
   }
 
    template <class value_type, class allocator_type>
-   typename vector<value_type, allocator_type>::reference  vector<value_type, allocator_type>::at(size_type pos) 
+   typename vector<value_type, allocator_type>::reference vector<value_type, allocator_type>::at(size_type pos) 
   {
     if (pos >= size())
       throw std::out_of_range("vector");
@@ -243,17 +243,6 @@ namespace ft
     return (*(_begin + pos));
   }
   
-  template <class T, class allocator_type>
-  T* vector<T, allocator_type>::data()
-  {
-    return (_begin);
-  }
-
-  template <class T, class allocator_type>
-  const T* vector<T, allocator_type>::data() const
-  {
-    return (_begin);
-  }
 
     /*******************************************{ capacity }*************************************************************/
    
