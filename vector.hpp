@@ -77,8 +77,20 @@ namespace ft
 
       allocator_type get_allocator() const;
       void assign(size_type count, const value_type& value);
-     template< class InputIt >
-      void assign( InputIt first, InputIt last );
+     // template< class InputIt >
+     //  void assign( InputIt first, InputIt last );
+
+	template< class InputIt >
+	void assign(InputIt first, InputIt last, typename ft::enable_if<!is_integral<InputIt>::value, InputIt>::type* = 0)
+	{
+		int i = 0;
+		for (InputIt it = first; it != last; it++)
+      i++;
+		reserve(i);
+		for (InputIt it = first; it != last; it++)
+			assign(1, *it);
+    _end = _begin + i;
+	}
 
     /****************************{ Element accessors }*(done Writing..)********************************/
       reference operator[]( size_type pos );
@@ -179,18 +191,22 @@ namespace ft
 		_end_cap = _begin + count;
 	}
 
+  /*
 	template<class value_type, class allocator_type>
 	template< class InputIt >
-	void vector<value_type, allocator_type >::assign(InputIt first, InputIt last)
+	void vector<value_type, allocator_type >::assign(InputIt first, InputIt last, typename ft::enable_if<!is_integral<InputIt>::value, InputIt>::type* = 0)
 	{
-		InputIt it = first;
-		int i; 
-		for (i= 0; (it + i) != last; i++);
+		int i = 0;
+		for (InputIt it = first; it != last; it++)
+      i++;
 		reserve(i);
-		for (i = 0; (it + i) != last; i++)
-			assign(1, (i + first));
+		for (InputIt it = first; it != last; it++)
+    {
+      std::cout << "should output: " << *it << std::endl;
+			assign(1, *it);
+    }
 	}
-
+*/
   template <class value_type, class allocator_type>
   typename vector<value_type, allocator_type>::allocator_type vector<value_type, allocator_type>::get_allocator() const
   {
