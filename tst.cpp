@@ -64,6 +64,10 @@ int  main()
   std::cout << "Size of first: " << int (first.size()) << '\n';
   std::cout << "Size of second: " << int (second.size()) << '\n';
   std::cout << "Size of third: " << int (third.size()) << '\n';
+
+  std::cout << "cap of first: " << int (first.capacity()) << '\n';
+  std::cout << "cap of second: " << int (second.capacity()) << '\n';
+  std::cout << "cap of third: " << int (third.capacity()) << '\n';
   }
 {
   ft::vector<int> first;
@@ -83,6 +87,10 @@ int  main()
   std::cout << "Size of first: " << int (first.size()) << '\n';
   std::cout << "Size of second: " << int (second.size()) << '\n';
   std::cout << "Size of third: " << int (third.size()) << '\n';
+
+  std::cout << "cap of first: " << int (first.capacity()) << '\n';
+  std::cout << "cap of second: " << int (second.capacity()) << '\n';
+  std::cout << "cap of third: " << int (third.capacity()) << '\n';
 }
   return 0;
 }

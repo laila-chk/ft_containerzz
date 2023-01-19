@@ -6,7 +6,7 @@
 /*   By: lchokri <lchokri@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 16:05:56 by lchokri           #+#    #+#             */
-/*   Updated: 2023/01/18 02:23:06 by lchokri          ###   ########.fr       */
+/*   Updated: 2023/01/19 01:58:22 by lchokri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,24 +72,15 @@ namespace ft
       vector& operator=( const vector& other );
       ~vector();
 
-
-
-
       allocator_type get_allocator() const;
       void assign(size_type count, const value_type& value);
-     // template< class InputIt >
-     //  void assign( InputIt first, InputIt last );
 
 	template< class InputIt >
 	void assign(InputIt first, InputIt last, typename ft::enable_if<!is_integral<InputIt>::value, InputIt>::type* = 0)
 	{
-		int i = 0;
+		this->clear();
 		for (InputIt it = first; it != last; it++)
-      i++;
-		reserve(i);
-		for (InputIt it = first; it != last; it++)
-			assign(1, *it);
-    _end = _begin + i;
+			push_back(*it);
 	}
 
     /****************************{ Element accessors }*(done Writing..)********************************/
@@ -118,6 +109,33 @@ namespace ft
       void resize( size_type count, T value = T() );
       void push_back( const T& value );
       
+	  iterator erase (iterator pos)
+	  {
+		  int i = 0;
+		  for (iterator it = begin(); it != pos; it++)
+			 i++; 
+		  for (iterator it = pos; it + 1 != end(); it++)
+			{
+				_alloc.destroy(_begin + i);
+				_alloc.construct(_begin + i, *(it + 1));
+				i++;
+			}
+		  _alloc.destroy(_begin + i);
+		  _end--;
+		  return (pos); 
+	  }
+
+	  iterator erase (iterator first, iterator last)
+	  {
+		  size_t i = 0;
+		  
+		  for (iterator it = first; it != last; it++)
+		  {
+			  _alloc.destroy();// destroy from first to last, 
+		  }
+
+	  }
+	  void swap(vector& x);
 
     /****************************{ iterator }***************************************/
       iterator begin();
@@ -191,22 +209,6 @@ namespace ft
 		_end_cap = _begin + count;
 	}
 
-  /*
-	template<class value_type, class allocator_type>
-	template< class InputIt >
-	void vector<value_type, allocator_type >::assign(InputIt first, InputIt last, typename ft::enable_if<!is_integral<InputIt>::value, InputIt>::type* = 0)
-	{
-		int i = 0;
-		for (InputIt it = first; it != last; it++)
-      i++;
-		reserve(i);
-		for (InputIt it = first; it != last; it++)
-    {
-      std::cout << "should output: " << *it << std::endl;
-			assign(1, *it);
-    }
-	}
-*/
   template <class value_type, class allocator_type>
   typename vector<value_type, allocator_type>::allocator_type vector<value_type, allocator_type>::get_allocator() const
   {
@@ -368,6 +370,15 @@ namespace ft
       resize(size() + 1, value);
   }
 
+  template <class T, class allocator_type>
+  void vector<T, allocator_type>::swap (vector& x)
+  {
+ 	std::swap(this->_begin, x._begin); 
+	std::swap(this->_end, x._end);
+	std::swap(this->_end_cap, x._end_cap);
+	std::swap(this->_alloc, x._alloc);
+  }
+ 
   /*********************************************{ iterator class }********************************************************/
   template <class T, class allocator_type>
   typename vector<T, allocator_type>::iterator vector<T, allocator_type>::begin(void)
