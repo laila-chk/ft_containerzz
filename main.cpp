@@ -18,12 +18,10 @@ int main()
 	// erase the first 3 elements:
 	ft::iterator<int> it = myvector.erase (myvector.begin(),myvector.begin()+3);
 
-	/*
 	std::cout << "myvector contains:";
 	for (unsigned i=0; i<myvector.size(); ++i)
 		std::cout << ' ' << myvector[i];
 	std::cout << '\n';
 
 	std::cout << "it is pointing to :" << *it << std::endl;
-	*/
 }
