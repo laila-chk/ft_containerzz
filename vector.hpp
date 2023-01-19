@@ -6,7 +6,7 @@
 /*   By: lchokri <lchokri@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 16:05:56 by lchokri           #+#    #+#             */
-/*   Updated: 2023/01/19 15:57:05 by lchokri          ###   ########.fr       */
+/*   Updated: 2023/01/20 00:49:24 by lchokri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,20 +127,26 @@ namespace ft
 
 	  iterator erase (iterator first, iterator last)
 	  {
-		  size_t i = 0;
-		  iterator it;
-		  for (it = begin(); it != first; it++)
-			  i++;
+		  int i = 0;
 		  int j = 0;
-		  for (it = first; it != end(); it++)
-		  {
-			  _alloc.destroy(_begin + i);
-			  if (*(last + j))
-				  _alloc.construct(_begin + i, *(last + j++) );
+		  pointer str, str1;
+		  for (iterator it = begin(); it != first; it++)
 			  i++;
+		  j = i;
+		  for (iterator it = first; it != last; it++)
+			  j++;
+		  str = _begin + i;
+		  str1 = _begin + j;
+		  for (iterator it = first; it != last; it++)
+		  {
+			  std::swap(str, str1);
+			  str++;
+			  str1++;
 		  }
-		  _end = _begin + j;
-		  return (last);
+		  _end = _end - (j - i);
+		  for (iterator it = last; it != end(); it++)
+			  _alloc.destroy(_begin + j);
+		  return (first);
 	  }
 	  void swap(vector& x);
 
