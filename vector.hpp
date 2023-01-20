@@ -6,7 +6,7 @@
 /*   By: lchokri <lchokri@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 16:05:56 by lchokri           #+#    #+#             */
-/*   Updated: 2023/01/20 00:49:24 by lchokri          ###   ########.fr       */
+/*   Updated: 2023/01/20 05:08:20 by lchokri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,26 +127,28 @@ namespace ft
 
 	  iterator erase (iterator first, iterator last)
 	  {
-		  int i = 0;
-		  int j = 0;
-		  pointer str, str1;
-		  for (iterator it = begin(); it != first; it++)
-			  i++;
-		  j = i;
-		  for (iterator it = first; it != last; it++)
-			  j++;
-		  str = _begin + i;
-		  str1 = _begin + j;
-		  for (iterator it = first; it != last; it++)
+		  vector tmp;
+		  for (iterator it = begin(); it != end(); it++)
 		  {
-			  std::swap(str, str1);
-			  str++;
-			  str1++;
+			  if (it < first || it >= last)
+				  tmp.push_back(*it);
 		  }
-		  _end = _end - (j - i);
-		  for (iterator it = last; it != end(); it++)
-			  _alloc.destroy(_begin + j);
-		  return (first);
+		  for (int i = 0; i < (int)size(); i++)
+		  {
+				  pointer vec = _begin + i;
+				  pointer tvec = tmp._begin + i;
+			  if (i < (int)tmp.size())
+				  std::swap(vec, tvec);
+				std::cout << *(vec) << "= " ;
+		  }
+		 std::cout << std::endl;
+	  for (int i = 0; i < (int)tmp.size() + 2; i++)
+		  std::cout << *(_begin + i) << ". " ;
+		 std::cout << std::endl;
+
+			  while (size() != tmp.size() )
+				 this->pop_back();
+		  return (tmp.begin());
 	  }
 	  void swap(vector& x);
 
