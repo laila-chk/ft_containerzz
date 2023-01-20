@@ -6,24 +6,60 @@
 
 int main()
 {
-	 ft::vector<int> myvector;
+	{
+		std::vector<int> myvector;
+		myvector.push_back(1);
+		myvector.push_back(2);
+		myvector.push_back(3);
+		myvector.push_back(4);
+		std::vector<int>::iterator it;
 
-	// set some values (from 1 to 10)
-	for (int i=1; i<=10; i++) myvector.push_back(i);
+		it = myvector.begin();
+		it = myvector.insert ( it , 200 );
+		/*
+		   myvector.insert (it,2,300);
 
-	// erase the 6th element
-//	std::vector<int>::iterator it = myvector.erase (myvector.begin()+5);
-//	ft::iterator<int> it = myvector.erase (myvector.begin()+5);
+		// "it" no longer valid, get a new one:
+		it = myvector.begin();
 
-	// erase the first 3 elements:
-	ft::iterator<int> it = myvector.erase (myvector.begin(),myvector.begin()+3);
-	//std::vector<int>::iterator it = myvector.erase(myvector.begin() ,myvector.begin()+3);
+		std::vector<int> anothervector (2,400);
+		myvector.insert (it+2,anothervector.begin(),anothervector.end());
 
+		int myarray [] = { 501,502,503 };
+		myvector.insert (myvector.begin(), myarray, myarray+3);
+		*/
+		std::cout << "myvector contains:";
+		for (it=myvector.begin(); it<myvector.end(); it++)
+			std::cout << ' ' << *it;
+		std::cout << '\n';
+	}
 
-	std::cout << "myvector contains:";
-	for (unsigned i=0; i<myvector.size(); ++i)
-		std::cout << ' ' << myvector[i];
-	std::cout << '\n';
+	{
+		ft::vector<int> myvector;
+		myvector.push_back(1);
+		myvector.push_back(2);
+		myvector.push_back(3);
+		myvector.push_back(4);
+		ft::vector<int>::iterator it;
 
-	std::cout << "it is pointing to :" << *it << std::endl;
+		it = myvector.begin();
+		it = myvector.insert ( it , 200 );
+		/*
+		   myvector.insert (it,2,300);
+
+		// "it" no longer valid, get a new one:
+		it = myvector.begin();
+
+		std::vector<int> anothervector (2,400);
+		myvector.insert (it+2,anothervector.begin(),anothervector.end());
+
+		int myarray [] = { 501,502,503 };
+		myvector.insert (myvector.begin(), myarray, myarray+3);
+		*/
+		std::cout << "myvector contains:";
+		for (it=myvector.begin(); it<myvector.end(); it++)
+			std::cout << ' ' << *it;
+		std::cout << '\n';
+	}
+  return 0;
 }

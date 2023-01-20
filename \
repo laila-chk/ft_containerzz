@@ -6,7 +6,7 @@
 /*   By: lchokri <lchokri@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 16:05:56 by lchokri           #+#    #+#             */
-/*   Updated: 2023/01/21 00:45:53 by lchokri          ###   ########.fr       */
+/*   Updated: 2023/01/20 20:48:00 by lchokri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -395,25 +395,16 @@ void swap(T& a, T& b)
   template <class T, class allocator_type>
 	 typename vector<T, allocator_type>::iterator vector<T, allocator_type>::insert(iterator pos, const T& x)
   {
-	  vector tmp;
 	  if (capacity() < size() + 1)
-		  tmp.reserve (size() + 1);
-	  else
-		  tmp.reserve (size());
+		  reserve (size() + 1);
 	  iterator it = begin();
-	  int j = 0;
-	  for (int i = 0; i < (int)size();)
+	  for (int i = 0; i  < (int)size(); i+=2)
 	  {
-		  if (it != pos)
-		  {
-			  tmp[j++] = (*this)[i++];
-		  }
-		  else
-			  tmp[j++] = x;
+			  ft::swap((*this)[i], (*this)[i +1]);
+		  if (it == pos)
+			  (*this)[i] = x;
 		  it++;
 	  }
-	  tmp._end += j;
-	 swap(tmp);
 	  return (pos);
   }
 
