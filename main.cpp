@@ -7,57 +7,61 @@
 int main()
 {
 	{
-		std::vector<int> myvector;
-		myvector.push_back(1);
-		myvector.push_back(2);
-		myvector.push_back(3);
-		myvector.push_back(4);
-		std::vector<int>::iterator it;
+		std::vector<std::string> v;
+		v.push_back("hi");
+		v.push_back("aa");
+		v.push_back("bb");
+		v.push_back("cc");
+		std::vector<std::string>::iterator it;
 
-		it = myvector.begin();
-		it = myvector.insert ( it , 200 );
+//		it = v.end();
+		it = v.insert ( v.end(), "WOW" );
 		/*
-		   myvector.insert (it,2,300);
+		   v.insert (it,2,300);
 
 		// "it" no longer valid, get a new one:
-		it = myvector.begin();
+		it = v.begin();
 
 		std::vector<int> anothervector (2,400);
-		myvector.insert (it+2,anothervector.begin(),anothervector.end());
+		v.insert (it+2,anothervector.begin(),anothervector.end());
 
 		int myarray [] = { 501,502,503 };
-		myvector.insert (myvector.begin(), myarray, myarray+3);
+		v.insert (myvector.begin(), myarray, myarray+3);
 		*/
-		std::cout << "myvector contains:";
-		for (it=myvector.begin(); it<myvector.end(); it++)
+		std::cout << "iterator pointing at:";
+			std::cout << ' ' << *it << std::endl;
+		std::cout << "the whole thing is: ";
+		for (it=v.begin(); it<v.end(); it++)
 			std::cout << ' ' << *it;
 		std::cout << '\n';
 	}
 
 	{
-		ft::vector<int> myvector;
-		myvector.push_back(1);
-		myvector.push_back(2);
-		myvector.push_back(3);
-		myvector.push_back(4);
-		ft::vector<int>::iterator it;
+		ft::vector<std::string> v;
+		v.push_back("hi");
+		v.push_back("aa");
+		v.push_back("bb");
+		v.push_back("cc");
+		ft::vector<std::string>::iterator it;
 
-		it = myvector.begin();
-		it = myvector.insert ( it , 200 );
+	//	it = v.end();
+		it = v.insert ( v.end(), "WOW" );
 		/*
-		   myvector.insert (it,2,300);
+		   v.insert (it,2,300);
 
 		// "it" no longer valid, get a new one:
-		it = myvector.begin();
+		it = v.begin();
 
 		std::vector<int> anothervector (2,400);
-		myvector.insert (it+2,anothervector.begin(),anothervector.end());
+		v.insert (it+2,anothervector.begin(),anothervector.end());
 
 		int myarray [] = { 501,502,503 };
-		myvector.insert (myvector.begin(), myarray, myarray+3);
+		v.insert (myvector.begin(), myarray, myarray+3);
 		*/
-		std::cout << "myvector contains:";
-		for (it=myvector.begin(); it<myvector.end(); it++)
+		std::cout << "iterator pointing at:";
+			std::cout << ' ' << *it<< std::endl;
+		std::cout << "the whole thing is: ";
+		for (it=v.begin(); it<v.end(); it++)
 			std::cout << ' ' << *it;
 		std::cout << '\n';
 	}

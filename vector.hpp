@@ -391,29 +391,56 @@ void swap(T& a, T& b)
   b = hold;
 }
  
-
+/*
   template <class T, class allocator_type>
 	 typename vector<T, allocator_type>::iterator vector<T, allocator_type>::insert(iterator pos, const T& x)
   {
-	  vector tmp;
-	  if (capacity() < size() + 1)
-		  tmp.reserve (size() + 1);
-	  else
-		  tmp.reserve (size());
-	  iterator it = begin();
-	  int j = 0;
-	  for (int i = 0; i < (int)size();)
+	  std::cout << "size() "<< size()  <<std::endl;
+	  if (pos == end() )
 	  {
-		  if (it != pos)
-		  {
-			  tmp[j++] = (*this)[i++];
-		  }
-		  else
-			  tmp[j++] = x;
-		  it++;
+		  push_back(x);
+		  return (end() - 1);
 	  }
-	  tmp._end += j;
-	 swap(tmp);
+	  if (pos != begin())
+		  vector tmp (begin(), pos - 1);
+	  else
+		  vector tmp;
+	  if (size() + 1 > capacity())
+		  tmp.resize(size() + 1);
+	  else 
+		  tmp.resize(capacity());
+	  tmp._alloc.construct(_end++, x);
+	  for (iterator it = pos; it != end(); it++)
+	  {
+		tmp._alloc.construct(_end++, *it);
+	  }
+	  pos = tmp.begin();
+	  swap(tmp);
+	  return (pos);
+  }
+*/
+  template <class T, class allocator_type>
+	 typename vector<T, allocator_type>::iterator vector<T, allocator_type>::insert(iterator pos, const T& x)
+  {
+	  if (pos == end())
+	  {push_back(x); return (end() - 1); }
+	  vector tmp(size() + 1);
+
+	  int i = 0;
+	  for (iterator it = begin(); it != end() ;)
+	  {
+		  if (it == pos)
+		  {
+			  pos =	tmp.begin() + i;
+			  tmp._alloc.destroy(tmp._begin + i);
+			 tmp._alloc.construct(tmp._begin + i++, x);
+		  }
+			  tmp._alloc.destroy(tmp._begin + i);
+		  tmp._alloc.construct(tmp._begin + i, *it);
+		  it++;
+		  i++;
+	  }
+	  swap(tmp);
 	  return (pos);
   }
 
