@@ -112,8 +112,29 @@ namespace ft
 
 	  iterator insert(iterator position, const T& x);
 	  void insert(iterator pos, size_t n, const T& x);
-	  template <class InputIterator>
-	  void insert(iterator position, InputIterator first, InputIterator last);
+
+	  template <class InputIt>
+	  void insert(iterator pos, InputIt first, InputIt last, typename enable_if<!is_integral<InputIt>::value, InputIt>::type* = 0)
+	  {
+		  if (pos == end())
+		  {
+			  for (InputIt it = first; it != last; it++)
+				  push_back(*it);
+			  return;
+		  }
+		  vector tmp;
+		  tmp.reserve(capacity());
+		  for (iterator it = begin(); it != end();)
+		  {
+			  if (it == pos)
+			  {
+				  for (InputIt cit = first; cit != last; cit++)
+					  tmp.push_back(*cit);
+			  }
+			  tmp.push_back(*it++);
+		  }
+		  swap(tmp);
+	  }
 
 	  iterator erase (iterator pos)
 	  {
@@ -121,11 +142,11 @@ namespace ft
 		  for (iterator it = begin(); it != pos; it++)
 			 i++; 
 		  for (iterator it = pos; it + 1 != end(); it++)
-			{
-				_alloc.destroy(_begin + i);
-				_alloc.construct(_begin + i, *(it + 1));
-				i++;
-			}
+		  {
+			_alloc.destroy(_begin + i);
+			_alloc.construct(_begin + i, *(it + 1));
+			i++;
+		}
 		  _alloc.destroy(_begin + i);
 		  _end--;
 		  return (pos); 
@@ -417,6 +438,7 @@ void swap(T& a, T& b)
 	  return (pos);
   }
 
+
 	template <class T, class allocator_type>
 	void vector<T, allocator_type>::insert(iterator pos, size_t n, const T& x)
 	{
@@ -426,11 +448,7 @@ void swap(T& a, T& b)
 			  push_back(x);
 		  return;
 	  }
-//	  if (size() + n < capacity())
-		  vector tmp(size() + n);
-//	  else
-//	   vector tmp(capacity());
-
+	  vector tmp(size() + n);
 	  int i = 0;
 	  for (iterator it = begin(); it != end() ;)
 	  {
@@ -449,6 +467,8 @@ void swap(T& a, T& b)
 	  }
 	  swap(tmp);
 	}
+
+
   /*********************************************{ iterator class }********************************************************/
   template <class T, class allocator_type>
   typename vector<T, allocator_type>::iterator vector<T, allocator_type>::begin(void)
