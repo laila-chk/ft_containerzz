@@ -16,10 +16,9 @@ int main()
 
 //		it = v.end();
 		it = v.insert ( v.end(), "WOW" );
-		/*
-		   v.insert (it,2,300);
+		   v.insert (it,2,"300");
 
-		// "it" no longer valid, get a new one:
+/*		// "it" no longer valid, get a new one:
 		it = v.begin();
 
 		std::vector<int> anothervector (2,400);
@@ -46,10 +45,10 @@ int main()
 
 	//	it = v.end();
 		it = v.insert ( v.end(), "WOW" );
-		/*
-		   v.insert (it,2,300);
 
-		// "it" no longer valid, get a new one:
+		   v.insert (it,2,"300");
+
+/*		// "it" no longer valid, get a new one:
 		it = v.begin();
 
 		std::vector<int> anothervector (2,400);

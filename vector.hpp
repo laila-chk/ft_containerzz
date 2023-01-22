@@ -111,7 +111,8 @@ namespace ft
 
 
 	  iterator insert(iterator position, const T& x);
-	  void insert(iterator position, size_type n, const T& x); template <class InputIterator>
+	  void insert(iterator pos, size_t n, const T& x);
+	  template <class InputIterator>
 	  void insert(iterator position, InputIterator first, InputIterator last);
 
 	  iterator erase (iterator pos)
@@ -391,34 +392,6 @@ void swap(T& a, T& b)
   b = hold;
 }
  
-/*
-  template <class T, class allocator_type>
-	 typename vector<T, allocator_type>::iterator vector<T, allocator_type>::insert(iterator pos, const T& x)
-  {
-	  std::cout << "size() "<< size()  <<std::endl;
-	  if (pos == end() )
-	  {
-		  push_back(x);
-		  return (end() - 1);
-	  }
-	  if (pos != begin())
-		  vector tmp (begin(), pos - 1);
-	  else
-		  vector tmp;
-	  if (size() + 1 > capacity())
-		  tmp.resize(size() + 1);
-	  else 
-		  tmp.resize(capacity());
-	  tmp._alloc.construct(_end++, x);
-	  for (iterator it = pos; it != end(); it++)
-	  {
-		tmp._alloc.construct(_end++, *it);
-	  }
-	  pos = tmp.begin();
-	  swap(tmp);
-	  return (pos);
-  }
-*/
   template <class T, class allocator_type>
 	 typename vector<T, allocator_type>::iterator vector<T, allocator_type>::insert(iterator pos, const T& x)
   {
@@ -444,6 +417,38 @@ void swap(T& a, T& b)
 	  return (pos);
   }
 
+	template <class T, class allocator_type>
+	void vector<T, allocator_type>::insert(iterator pos, size_t n, const T& x)
+	{
+	  if (pos == end())
+	  {
+		  for (size_t i = 0; i < n; i++)
+			  push_back(x);
+		  return;
+	  }
+//	  if (size() + n < capacity())
+		  vector tmp(size() + n);
+//	  else
+//	   vector tmp(capacity());
+
+	  int i = 0;
+	  for (iterator it = begin(); it != end() ;)
+	  {
+		  if (it == pos)
+		  {
+			  for (size_t j = 0; j < n; j++)
+			  {
+				  tmp._alloc.destroy(tmp._begin + i);
+				  tmp._alloc.construct(tmp._begin + i++, x);
+			  }
+		  }
+			  tmp._alloc.destroy(tmp._begin + i);
+		  tmp._alloc.construct(tmp._begin + i, *it);
+		  it++;
+		  i++;
+	  }
+	  swap(tmp);
+	}
   /*********************************************{ iterator class }********************************************************/
   template <class T, class allocator_type>
   typename vector<T, allocator_type>::iterator vector<T, allocator_type>::begin(void)
