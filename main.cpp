@@ -19,7 +19,7 @@ int main()
 		// "it" no longer valid, get a new one:
 		it = myvector.begin();
 
-		std::vector<int> anothervector (2,400);
+		std::vector<int> anothervector = myvector;
 		myvector.insert (it+2,anothervector.begin(),anothervector.end());
 
 		int myarray [] = { 501,502,503 };

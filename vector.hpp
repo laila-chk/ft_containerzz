@@ -209,15 +209,18 @@ namespace ft
   }
 
    template<class value_type, class allocator_type>
-  vector<value_type, allocator_type>& vector<value_type, allocator_type>:: operator=(const vector& other)
+  vector<value_type, allocator_type>& vector<value_type, allocator_type>:: operator=(const vector& x)
   {
-    if (other.size() > this->capacity())
-      this->reserve(other.capacity());
-    if (_begin)
-      _alloc.deallocate(_begin, _end_cap - _begin);
-    for (size_type i = 0; i < other.size(); i++)
-      _alloc.construct(_begin + i, other[i]);
-    return (*this);
+	  if (this->size() > 0)
+		  this->clear();
+	  if (_begin)
+		  this->_alloc.deallocate(_begin, capacity());
+	  _begin = this->_alloc.allocate(x.capacity());
+	  for (size_t i = 0; i < x.size(); i++)
+		  this->_alloc.construct(_begin + i, x[i]);
+	  _end = _begin + x.size();
+	  _end_cap = _begin + x.capacity();
+	  return (*this);
   }
 
     /****************************Member functions***********************/
