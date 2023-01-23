@@ -489,6 +489,65 @@ void swap(T& a, T& b)
     return (it);
   }
 
+	template <class T, class allocator_type>
+	  bool operator== (const vector<T, allocator_type>& lhs, const vector<T, allocator_type>& rhs)
+	  {
+		  if (lhs.size() == rhs.size())
+		  {
+			  for (size_t i = 0; i < rhs.size(); i++)
+			  {
+				  if (rhs[i] != lhs[i])
+					  return false;
+			  }
+			  return true;
+		  }
+		return (false);
+	  }
+
+	template <class T, class allocator_type>
+	  bool operator!= (const vector<T, allocator_type>& lhs, const vector<T, allocator_type>& rhs)
+	  {
+		  return !(rhs == lhs);
+	  }
+
+	template <class T, class allocator_type>
+	  bool operator < (const vector<T, allocator_type>& lhs, const vector<T, allocator_type>& rhs)
+	  {
+		  for (size_t i = 0; i < lhs.size(); i++)
+		  {
+			  if (!lhs.empty() && !rhs.empty())
+			  {
+				  if (i == rhs.size())
+					  break;
+					 if (lhs[i] < rhs[i])
+						  return true;
+					 else if (lhs[i] > rhs[i])
+						return false;
+			  }
+		  }
+		  if (lhs.size() < rhs.size())
+			  return true;
+		  return false;
+	  }
+
+	template <class T, class allocator_type>
+	  bool operator > (const vector<T, allocator_type>& lhs, const vector<T, allocator_type>& rhs)
+	  {
+		  return (rhs < lhs);
+	  }
+
+	template <class T, class allocator_type>
+	  bool operator <= (const vector<T, allocator_type>& lhs, const vector<T, allocator_type>& rhs)
+	  {
+		  return !(rhs < lhs);
+	  }
+
+	template <class T, class allocator_type>
+	  bool operator >= (const vector<T, allocator_type>& lhs, const vector<T, allocator_type>& rhs)
+	  {
+		  return !(lhs < rhs);
+	  }
+
 } //end of namespace ft
 
 
