@@ -110,7 +110,6 @@ namespace ft
   iterator<T>::iterator (const iterator<T>& it)
   {
     this->add = it.add;
-    // this->add = it.val;
   }
 
   template<class T>
@@ -219,16 +218,6 @@ namespace ft
     return (*this);
   }
 
-
-
-// template< class Iter >
-// struct iterator_traits;
-//
-// template< class T >
-// struct iterator_traits<T*>;
-//
-// template< class T >
-// struct iterator_traits<const T*>
 
   template<class iterator > 
   struct iterator_traits
