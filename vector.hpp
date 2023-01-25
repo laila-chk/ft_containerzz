@@ -6,7 +6,7 @@
 /*   By: lchokri <lchokri@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 16:05:56 by lchokri           #+#    #+#             */
-/*   Updated: 2023/01/21 00:45:53 by lchokri          ###   ########.fr       */
+/*   Updated: 2023/01/25 14:20:09 by lchokri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,7 @@ namespace ft
       typedef typename allocator_type::const_pointer        const_pointer;
 
       typedef typename ft::iterator<T>                      iterator; 
-      // typedef implementation-defined                  iterator;
-      // typedef implementation-defined                     const_iterator;
+      typedef typename ft::iterator<T>                const_iterator; 
       // typedef std::reverse_iterator<iterator>            reverse_iterator;
       // typedef std::reverse_iterator<const_iterator>      const_reverse_iterator;
       
@@ -165,7 +164,9 @@ namespace ft
 
     /****************************{ iterator }***************************************/
       iterator begin();
+	  const_iterator begin() const;
       iterator end();
+	  const_iterator end() const;
 
        /********************************************************************************/
   };
@@ -482,9 +483,25 @@ void swap(T& a, T& b)
   }
 
   template <class T, class allocator_type>
+  typename vector<T, allocator_type>::const_iterator vector<T, allocator_type>::begin(void) const
+  {
+    const_iterator it;
+    it.add = _begin;
+    return (it);
+  }
+
+ template <class T, class allocator_type>
   typename vector<T, allocator_type>::iterator vector<T, allocator_type>::end(void)
   {
     iterator it;
+    it.add = _end;
+    return (it);
+  }
+
+  template <class T, class allocator_type>
+  typename vector<T, allocator_type>::const_iterator vector<T, allocator_type>::end(void) const
+  {
+    const_iterator it;
     it.add = _end;
     return (it);
   }
