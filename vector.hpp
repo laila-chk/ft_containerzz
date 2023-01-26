@@ -6,7 +6,7 @@
 /*   By: lchokri <lchokri@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 16:05:56 by lchokri           #+#    #+#             */
-/*   Updated: 2023/01/25 14:20:09 by lchokri          ###   ########.fr       */
+/*   Updated: 2023/01/26 21:28:54 by lchokri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include <vector>
 #include <stdexcept>
 #include "iterator.hpp"
+#include "reverse_iterator.hpp"
 #include <iterator>
 #include <list>
 
@@ -43,9 +44,9 @@ namespace ft
       typedef typename allocator_type::const_pointer        const_pointer;
 
       typedef typename ft::iterator<T>                      iterator; 
-      typedef typename ft::iterator<T>                const_iterator; 
-      // typedef std::reverse_iterator<iterator>            reverse_iterator;
-      // typedef std::reverse_iterator<const_iterator>      const_reverse_iterator;
+      typedef typename ft::iterator<T>						const_iterator; 
+	  typedef typename ft::reverse_iterator<iterator>       reverse_iterator;
+	  typedef typename ft::reverse_iterator<iterator>       const_reverse_iterator;
       
     private:
       allocator_type _alloc;
@@ -91,8 +92,6 @@ namespace ft
       const_reference back() const;
       reference at( size_type pos );
       const_reference at( size_type pos ) const;
-      T* data();
-      const T* data() const;
 
 
     /****************************{ capacity }**(done writing)*************************************/
@@ -157,7 +156,7 @@ namespace ft
 		  tmp.reserve(capacity());
 		  for (iterator it = last; it != end(); it++)
 			tmp._alloc.construct( tmp._end++, *it);
-		 swap(tmp);
+		  swap(tmp);
 		  return (tmp.begin());
 	  }
 	  void swap(vector& x);
@@ -167,10 +166,13 @@ namespace ft
 	  const_iterator begin() const;
       iterator end();
 	  const_iterator end() const;
+	  reverse_iterator rbegin();
+	  const_reverse_iterator rbegin() const;
+	  reverse_iterator rend();
+	  const_reverse_iterator rend() const;
 
        /********************************************************************************/
   };
-  
 
   /***********************************************{ Constructors }*********************************************************/
   template <class T, class Allocator >
@@ -504,6 +506,39 @@ void swap(T& a, T& b)
     const_iterator it;
     it.add = _end;
     return (it);
+  }
+   
+  template <class T, class allocator_type>
+  typename vector<T, allocator_type>::reverse_iterator vector<T, allocator_type>::rbegin()
+  {
+	iterator it = end() - 1;
+	reverse_iterator rit(it);
+	return rit;
+  }
+
+  template <class T, class allocator_type>
+  typename vector<T, allocator_type>::const_reverse_iterator vector<T, allocator_type>::rbegin() const
+  {
+	iterator it = end();
+	const_reverse_iterator rit(--it);
+	return rit;
+  }
+
+ template <class T, class allocator_type>
+  typename vector<T, allocator_type>::const_reverse_iterator vector<T, allocator_type>::rend() const
+{
+	iterator it = begin() - 1;
+	const_reverse_iterator rit(it);
+	return rit;
+  }
+
+
+  template <class T, class allocator_type>
+  typename vector<T, allocator_type>::reverse_iterator vector<T, allocator_type>::rend()
+  {
+	iterator it = begin() - 1;
+	reverse_iterator rit(it);
+	return rit;
   }
 
 	template <class T, class allocator_type>

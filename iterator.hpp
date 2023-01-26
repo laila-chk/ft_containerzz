@@ -26,13 +26,14 @@ namespace ft {
 			typedef std::random_access_iterator_tag iterator_category;
 			typedef T value_type;
 			typedef std::ptrdiff_t difference_type;
-			typedef T *pointer;
-			typedef T &reference;
+			typedef T* pointer;
+			typedef T& reference;
 
 			pointer add;
 
 			/*-------------------------------------------{ construction	}----------------------------------------------*/
 			iterator();
+			iterator(pointer a) : add(a) {}
 			iterator(const iterator &it);
 			iterator &operator=(const iterator &it);
 			~iterator();
@@ -44,9 +45,9 @@ namespace ft {
 			bool operator==(const iterator &it) const;
 			bool operator!=(const iterator &it) const;
 			/*-------------------------------------------{ accessors }----------------------------------------------*/
-			value_type& operator*() ;
-			pointer operator->();
-			value_type operator[](unsigned int i) const;
+			value_type& operator*() const;
+			pointer operator->() const;
+			value_type& operator[](unsigned int i) const;
 			/*-------------------------------------------{ increment & dec }----------------------------------------------*/
 			iterator &operator++();
 			iterator operator++(int);
@@ -115,17 +116,17 @@ namespace ft {
 	}
 
 	template <class T>
-		typename iterator<T>::value_type& iterator<T>::operator*()  {
+		typename iterator<T>::value_type& iterator<T>::operator*() const {
 			return (*add);
 		}
 
 	template <class T>
-		typename iterator<T>::value_type iterator<T>::operator[](unsigned int i) const {
+		typename iterator<T>::value_type& iterator<T>::operator[](unsigned int i) const {
 			return *(add + i);
 		}
 
 	template <class T>
-		typename iterator<T>::pointer iterator<T>::operator->() {
+		typename iterator<T>::pointer iterator<T>::operator->()const {
 			return (add);
 		}
 
