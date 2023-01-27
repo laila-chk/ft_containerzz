@@ -7,7 +7,8 @@
 namespace ft 
 {
 	template <class Iterator>
-		class reverse_iterator 	{
+		class reverse_iterator 	
+		{
 			protected:
 				Iterator  It;
 			public:
@@ -28,7 +29,7 @@ namespace ft
 				/**************************    {operators }****************************/
 				Iterator base() const
 				{
-					return (It);
+					return (Iterator(It));
 				}
 
 				reference operator*() const
@@ -83,8 +84,9 @@ namespace ft
 
 				reference operator[](difference_type n) const
 				{
-					n--;
-					return ( It[n]);
+					reverse_iterator ret = *this;
+					ret += n;
+					return (*ret);
 				}
 
 		};
@@ -112,7 +114,7 @@ namespace ft
 
 	template <class Iterator>
 		bool operator<( const reverse_iterator<Iterator>& x, const reverse_iterator<Iterator>& y){
-			return (x.base() < y.base());
+			return (x.base() > y.base());
 		}
 
 	template <class Iterator>
@@ -123,17 +125,17 @@ namespace ft
 	template <class Iterator>
 		bool operator>( const reverse_iterator<Iterator>& x, const reverse_iterator<Iterator>& y)
 		{
-			return (x.base() > y.base());
+			return (x.base() < y.base());
 		}
 	template <class Iterator>
 		bool operator>=( const reverse_iterator<Iterator>& x, const reverse_iterator<Iterator>& y){
-			return (x.base() >= y.base());
+			return (x.base() <= y.base());
 		}
 
 	template <class Iterator>
 		bool operator<=( const reverse_iterator<Iterator>& x, const reverse_iterator<Iterator>& y)
 		{
-			return (x.base() <= y.base());
+			return (x.base() >= y.base());
 		}
 	
 	template <class Iterator>

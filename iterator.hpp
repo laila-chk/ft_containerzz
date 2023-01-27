@@ -68,7 +68,7 @@ namespace ft {
 			   return iterator<const value_type>(add);
 			 }
 			 */
-	};
+		};
 
 	template <class T> iterator<T>::iterator() : add(NULL) {}
 
