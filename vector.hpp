@@ -6,7 +6,7 @@
 /*   By: lchokri <lchokri@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 16:05:56 by lchokri           #+#    #+#             */
-/*   Updated: 2023/01/26 21:28:54 by lchokri          ###   ########.fr       */
+/*   Updated: 2023/01/28 19:24:32 by lchokri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,15 @@
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
+#include "iterator.hpp"
+#include "reverse_iterator.hpp"
+#include "algo.hpp"
 #include <cstddef>
 #include <iostream>
 #include <iterator>
 #include <memory>
 #include <vector>
 #include <stdexcept>
-#include "iterator.hpp"
-#include "reverse_iterator.hpp"
 #include <iterator>
 #include <list>
 
