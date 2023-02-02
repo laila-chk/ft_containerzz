@@ -6,7 +6,7 @@
 /*   By: lchokri <lchokri@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 16:05:56 by lchokri           #+#    #+#             */
-/*   Updated: 2023/01/28 19:24:32 by lchokri          ###   ########.fr       */
+/*   Updated: 2023/02/02 21:43:56 by lchokri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ namespace ft
 	  const_reverse_iterator rend() const;
 
        /********************************************************************************/
-  };
+};
 
   /***********************************************{ Constructors }*********************************************************/
   template <class T, class Allocator >
@@ -600,6 +600,12 @@ void swap(T& a, T& b)
 	  {
 		  return !(lhs < rhs);
 	  }
+
+	template <class U, class V>
+	bool operator== (iterator<U> &u, iterator <V> &v)
+	{
+		return (u == v);
+	}
 
 } //end of namespace ft
 
