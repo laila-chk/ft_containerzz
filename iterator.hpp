@@ -62,12 +62,11 @@ namespace ft {
 			iterator &operator+=(int n);
 			iterator &operator-=(int n);
 
-			/*
+
 			operator iterator<const value_type>()
 			 {
 			   return iterator<const value_type>(add);
 			 }
-			 */
 		};
 
 	template <class T> iterator<T>::iterator() : add(NULL) {}
