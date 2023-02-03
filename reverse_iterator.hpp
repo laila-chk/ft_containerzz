@@ -65,7 +65,7 @@ namespace ft
 				}
 				reverse_iterator operator+ (difference_type n) const{
 
-				 return reverse_iterator (this->base() -n);
+				 return reverse_iterator (this->base() -n + 1);
 				}
 
 				reverse_iterator& operator+= (difference_type n) {
@@ -74,7 +74,7 @@ namespace ft
 				}
 
 				reverse_iterator operator- (difference_type n) const{
-					 return reverse_iterator (this->base() + n);
+					 return reverse_iterator (this->base() + n +1);
 				}
 
 				reverse_iterator& operator-=(difference_type n) {
@@ -94,7 +94,7 @@ namespace ft
 	template <class Iterator>
 		reverse_iterator<Iterator>::reverse_iterator(Iterator x)
 		{
-			this->It = x;	
+			this->It = --x;	
 		}
 
 	template <class Iter> 
@@ -104,7 +104,6 @@ namespace ft
 			It = u.base();
 		}
 
-	/*
 	template <class Iterator>
 		bool operator==( const reverse_iterator<Iterator>& x, const reverse_iterator<Iterator>& y)
 		{
@@ -113,7 +112,6 @@ namespace ft
 			return false;
 		}
 
-	*/
 	template <class U, class V>
 		bool operator<( const reverse_iterator<V> &x, const reverse_iterator<U> &y){
 			return (x.base() > y.base());
@@ -149,7 +147,7 @@ namespace ft
 	template <class Iterator>
 		reverse_iterator<Iterator> operator+( typename reverse_iterator<Iterator>::difference_type n, const reverse_iterator<Iterator>& x)
 		{
-			 return reverse_iterator <Iterator>(x.base() - n);
+			 return reverse_iterator <Iterator>(x.base() - n +1);
 		}
 
 	template <class U, class V>

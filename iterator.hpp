@@ -1,6 +1,7 @@
 #ifndef ITERATOR_HPP
 #define ITERATOR_HPP
 
+#include "vector.hpp"
 #include <cstddef>
 #include <iostream>
 #include <iterator>
@@ -174,6 +175,15 @@ namespace ft {
 			return true;
 		return false;
 	}
+
+
+
+	template <class U, class V>
+		bool operator== (iterator<U> &u, iterator<V> &v)
+		{
+			return (u == v);
+		}
+
 
 	template <class T> bool iterator<T>::operator==(const iterator &it) const {
 		if (this->add == it.add)

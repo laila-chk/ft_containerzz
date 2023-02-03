@@ -6,7 +6,7 @@
 /*   By: lchokri <lchokri@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 16:05:56 by lchokri           #+#    #+#             */
-/*   Updated: 2023/02/02 21:43:56 by lchokri          ###   ########.fr       */
+/*   Updated: 2023/02/03 12:00:02 by lchokri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -601,11 +601,13 @@ void swap(T& a, T& b)
 		  return !(lhs < rhs);
 	  }
 
+/*
 	template <class U, class V>
 	bool operator== (iterator<U> &u, iterator <V> &v)
 	{
 		return (u == v);
 	}
+	*/
 
 } //end of namespace ft
 
