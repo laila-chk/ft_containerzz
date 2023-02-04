@@ -6,7 +6,7 @@
 /*   By: lchokri <lchokri@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 16:05:56 by lchokri           #+#    #+#             */
-/*   Updated: 2023/02/03 12:43:26 by lchokri          ###   ########.fr       */
+/*   Updated: 2023/02/04 20:22:42 by lchokri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -412,6 +412,7 @@ namespace ft
 	std::swap(this->_alloc, x._alloc);
   }
 
+/*
 template <typename T>
 void swap(T& a, T& b)
 {
@@ -419,6 +420,7 @@ void swap(T& a, T& b)
   a = b;
   b = hold;
 }
+*/
  
   template <class T, class allocator_type>
 	 typename vector<T, allocator_type>::iterator vector<T, allocator_type>::insert(iterator pos, const T& x)
@@ -512,7 +514,7 @@ void swap(T& a, T& b)
   template <class T, class allocator_type>
   typename vector<T, allocator_type>::reverse_iterator vector<T, allocator_type>::rbegin()
   {
-	iterator it = end() - 1;
+	iterator it = end();
 	reverse_iterator rit(it);
 	return rit;
   }
@@ -521,14 +523,14 @@ void swap(T& a, T& b)
   typename vector<T, allocator_type>::const_reverse_iterator vector<T, allocator_type>::rbegin() const
   {
 	iterator it = end();
-	const_reverse_iterator rit(--it);
+	const_reverse_iterator rit(it);
 	return rit;
   }
 
  template <class T, class allocator_type>
   typename vector<T, allocator_type>::const_reverse_iterator vector<T, allocator_type>::rend() const
 {
-	iterator it = begin() - 1;
+	iterator it = begin();
 	const_reverse_iterator rit(it);
 	return rit;
   }
@@ -537,7 +539,7 @@ void swap(T& a, T& b)
   template <class T, class allocator_type>
   typename vector<T, allocator_type>::reverse_iterator vector<T, allocator_type>::rend()
   {
-	iterator it = begin() - 1;
+	iterator it = begin();
 	reverse_iterator rit(it);
 	return rit;
   }
