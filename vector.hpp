@@ -6,7 +6,7 @@
 /*   By: lchokri <lchokri@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 16:05:56 by lchokri           #+#    #+#             */
-/*   Updated: 2023/02/05 10:22:02 by lchokri          ###   ########.fr       */
+/*   Updated: 2023/02/05 12:41:19 by lchokri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,15 @@ namespace ft
       template< class InputIt>
       vector (InputIt first, InputIt last, const allocator_type& alloc = allocator_type(), typename ft::enable_if<!is_integral<InputIt>::value, InputIt>::type* = 0): _alloc(alloc), _begin(NULL), _end(NULL), _end_cap(NULL)
       {
+		  vector tmp;
        for (InputIt it = first; it != last; it++)
-        this->push_back(*it);
+        tmp.push_back(*it);
+	   this->_begin = _alloc.allocate(tmp.size());
+	   size_type i;
+	   for (i = 0; i < tmp.size(); i++)
+		   this->_alloc.construct(_begin + i, tmp[i]);
+	   _end = _begin + i;
+	   _end_cap = _begin + i;
       }
       vector(const vector& other);
 
@@ -381,10 +388,10 @@ namespace ft
     }
     else if (count > size())
     {
-      if (count > capacity() * 2)
+      if (count > capacity())
         reserve(count);
       else
-        reserve(capacity() * 2);
+        reserve(capacity());
       for(pointer i = _end; i < _begin + count; i++)
         _alloc.construct(i, value);
       _end = _begin +  count;
