@@ -6,7 +6,7 @@
 /*   By: lchokri <lchokri@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 16:05:56 by lchokri           #+#    #+#             */
-/*   Updated: 2023/02/04 20:22:42 by lchokri          ###   ########.fr       */
+/*   Updated: 2023/02/05 10:22:02 by lchokri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -412,15 +412,13 @@ namespace ft
 	std::swap(this->_alloc, x._alloc);
   }
 
-/*
-template <typename T>
-void swap(T& a, T& b)
-{
-  T hold = a;
-  a = b;
-  b = hold;
-}
-*/
+	template <typename T>
+	void swap(T& a, T& b)
+	{
+	  T hold = a;
+	  a = b;
+	  b = hold;
+	}
  
   template <class T, class allocator_type>
 	 typename vector<T, allocator_type>::iterator vector<T, allocator_type>::insert(iterator pos, const T& x)
