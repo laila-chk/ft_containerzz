@@ -6,7 +6,7 @@
 /*   By: lchokri <lchokri@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 16:05:56 by lchokri           #+#    #+#             */
-/*   Updated: 2023/02/05 12:41:19 by lchokri          ###   ########.fr       */
+/*   Updated: 2023/02/05 17:04:30 by lchokri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,10 +162,11 @@ namespace ft
 	  {
 		  vector tmp(begin(), first);
 		  tmp.reserve(capacity());
+		  iterator ret = tmp.end();
 		  for (iterator it = last; it != end(); it++)
-			tmp._alloc.construct( tmp._end++, *it);
+			tmp._alloc.construct(tmp._end++, *it);
 		  swap(tmp);
-		  return (tmp.begin());
+		  return (ret);
 	  }
 	  void swap(vector& x);
 
@@ -402,12 +403,19 @@ namespace ft
   void vector<T, allocator_type>::push_back( const T& value ) 
   {
     if (size() < capacity())
-  {
-    _alloc.construct(_end, value);
-    _end++;
-  }
+	{
+		_alloc.construct(_end, value);
+		_end++;
+	  }
     else
-      resize(size() + 1, value);
+	{
+		if (capacity() != 0)
+			reserve(2*capacity());
+		else
+			reserve(1);
+		_alloc.construct(_end, value);
+		_end++;
+	}
   }
 
   template <class T, class allocator_type>
