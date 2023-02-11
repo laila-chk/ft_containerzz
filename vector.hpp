@@ -6,7 +6,7 @@
 /*   By: lchokri <lchokri@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 16:05:56 by lchokri           #+#    #+#             */
-/*   Updated: 2023/02/05 17:04:30 by lchokri          ###   ########.fr       */
+/*   Updated: 2023/02/11 19:38:30 by lchokri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,8 @@ namespace ft
 	template< class InputIt >
 	void assign(InputIt first, InputIt last, typename ft::enable_if<!is_integral<InputIt>::value, InputIt>::type* = 0)
 	{
-		this->clear();
-		for (InputIt it = first; it != last; it++)
-			push_back(*it);
+		vector tmp(first, last);
+		this->swap(tmp);
 	}
 
     /****************************{ Element accessors }*(done Writing..)********************************/
@@ -239,15 +238,19 @@ namespace ft
 	template <class value_type, class allocator_type>
 	void vector<value_type, allocator_type >::assign(size_type count, const value_type& value)
 	{
+		// in case u wanted to optimaze: there are two cases: cap <\> count, constructing a tmp depending on each case and swappin is less painful i guess
 		for (size_type i = 0; i < size(); i++)
 			this->_alloc.destroy(_begin + i);
-		if (_begin)
-			this->_alloc.deallocate(_begin, capacity());
-		_begin = _alloc.allocate(count);
+		if (capacity() < count)
+		{
+			if (_begin)
+				this->_alloc.deallocate(_begin, capacity());
+			_begin = _alloc.allocate(count);
+		_end_cap = _begin + count;
+		}
 		for (size_type i = 0; i < count; i++)
 			_alloc.construct(_begin + i, value);
 		_end = _begin + count;
-		_end_cap = _begin + count;
 	}
 
   template <class value_type, class allocator_type>
@@ -434,61 +437,76 @@ namespace ft
 	  a = b;
 	  b = hold;
 	}
- 
+
   template <class T, class allocator_type>
 	 typename vector<T, allocator_type>::iterator vector<T, allocator_type>::insert(iterator pos, const T& x)
   {
 	  if (pos == end())
-	  {push_back(x); return (end() - 1); }
-	  vector tmp(size() + 1);
-
-	  int i = 0;
-	  for (iterator it = begin(); it != end() ;)
+	  {push_back(x); return (end() - 1);}
+	   if (this->capacity() < this->size() + 1)
+		{
+		  difference_type distance = pos - this->begin();
+		   this->reserve((this->capacity())* 2);
+		  pos = this->begin() + distance;
+	}
+	   int i = 0;
+	   _end++;
+	   //the problem is in end, after resizing we write into smth we didnot allocate properrly Probably!!
+	  for (iterator it = end(); it != begin() - 1 ; it--)
 	  {
 		  if (it == pos)
 		  {
-			  pos =	tmp.begin() + i;
-			  tmp._alloc.destroy(tmp._begin + i);
-			 tmp._alloc.construct(tmp._begin + i++, x);
+			  if (it != end() -1)
+				  _alloc.destroy(_end - i); 
+			_alloc.construct(_end - i++, x);
 		  }
-			  tmp._alloc.destroy(tmp._begin + i);
-		  tmp._alloc.construct(tmp._begin + i, *it);
-		  it++;
+		  if (it > pos)
+		  {
+			  if (it != end()-1)
+				  _alloc.destroy(_end - i); 
+			_alloc.construct(_end - i, *(it -1));
+		  }
 		  i++;
 	  }
-	  swap(tmp);
 	  return (pos);
   }
 
 
-	template <class T, class allocator_type>
+		template <class T, class allocator_type>
 	void vector<T, allocator_type>::insert(iterator pos, size_t n, const T& x)
 	{
-	  if (pos == end())
-	  {
-		  for (size_t i = 0; i < n; i++)
-			  push_back(x);
-		  return;
-	  }
-	  vector tmp(size() + n);
-	  int i = 0;
-	  for (iterator it = begin(); it != end() ;)
-	  {
-		  if (it == pos)
-		  {
-			  for (size_t j = 0; j < n; j++)
-			  {
-				  tmp._alloc.destroy(tmp._begin + i);
-				  tmp._alloc.construct(tmp._begin + i++, x);
-			  }
-		  }
-			  tmp._alloc.destroy(tmp._begin + i);
-		  tmp._alloc.construct(tmp._begin + i, *it);
-		  it++;
-		  i++;
-	  }
-	  swap(tmp);
+		vector tmp;
+		if (!capacity())
+			tmp.reserve(n);
+		if (this->capacity() < this->size() + n)
+		{
+			if (capacity())
+				tmp.reserve((capacity())* 2);
+			std::cout << capacity() << "****"<< std::endl;
+			std::cout << tmp.capacity() << "****" <<std::endl;
+		}
+		size_t i = 0;
+		for (iterator it = begin(); it != end() +1; it++)
+		{
+			if (it == pos)
+			{
+				for (size_t j = 0; j < n; j++)
+				{
+					tmp._alloc.construct(tmp._begin + i++, x);
+				}
+			}
+			if (it < end())
+				tmp._alloc.construct(tmp._begin + i, *it);
+			i++;
+		}
+		tmp._end += n;
+		swap(tmp);
+		std::cout << size() << "~~XX~~"<< std::endl;
+		std::cout << capacity() << "~~~~~"<< std::endl;
+		std::cout << tmp.capacity() << "~~~~" <<std::endl;
 	}
+
+
 
 
   /*********************************************{ iterator class }********************************************************/
@@ -626,5 +644,13 @@ namespace ft
 
 } //end of namespace ft
 
+namespace std
+{
+	template <class T, class Alloc>
+	void swap(ft::vector<T, Alloc>& lhs, ft::vector<T, Alloc>& rhs)
+	{
+		lhs.swap(rhs);
+	}
+};
 
 #endif 
