@@ -1,3 +1,2 @@
 # ft_containerzz
-the main purpose of this project is to make us appreciate the STL containers, since we are going to re-code some of them without the help of other containers..
-
+In this project, we are supposed to re-implement three of the STL containers: the vector, the stack and the map, I so far finished the vector, my container is all done and redy to use. Unfortunatelly the project was removed from the school and we are no longer demanded to work on it, but the amount of information i got so far by just re-implementing the vector is quite interesting which makes me aim for finishing the project later when I have a little Time just for the sake of the knowledge i will get because of that.
